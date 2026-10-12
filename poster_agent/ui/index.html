@@ -21,6 +21,8 @@
     textarea{width:100%;min-height:200px;resize:vertical;padding:12px;border:1px solid var(--line);font:inherit}
     textarea:focus{outline:2px solid var(--green);outline-offset:1px}
     .hint,.status{font-size:12px;color:var(--muted)}
+    select{width:100%;min-height:44px;margin:0 0 12px;padding:9px 12px;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit}
+    select:focus-visible,button:focus-visible,a:focus-visible,textarea:focus-visible{outline:3px solid #315f9c;outline-offset:2px}
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
     button{padding:11px 15px;border:1px solid var(--green);background:var(--green);color:white;font:inherit;font-weight:700;cursor:pointer}
     button.secondary{background:white;color:var(--green)}
@@ -42,7 +44,13 @@
     <div class="workspace">
       <section class="panel" aria-labelledby="prompt-title">
         <h2 id="prompt-title">Your brief</h2>
+        <p class="hint" id="poster-capability">Childhood cancer awareness can use the built-in reviewed poster template; other briefs require the configured language model.</p>
         <form id="poster-form">
+          <label for="prompt-preset">Start from a reviewed prompt</label>
+          <select id="prompt-preset">
+            <option value="childhood-cancer" selected>Childhood cancer awareness</option>
+            <option value="">Choose another prompt or clear selection</option>
+          </select>
           <label for="prompt">What should the poster say and feel like?</label>
           <textarea id="prompt" maxlength="1500" required placeholder="Create a welcoming community health fair poster for families. Include the date, time, location, and activities supplied in my prompt. Use a warm, friendly style."></textarea>
           <p class="hint">Up to 1,500 characters. Include exact event details or source notes when accuracy matters.</p>
@@ -62,6 +70,7 @@
   <script>
     const form = document.querySelector("#poster-form");
     const promptField = document.querySelector("#prompt");
+    const promptPreset = document.querySelector("#prompt-preset");
     const generateButton = document.querySelector("#generate");
     const status = document.querySelector("#status");
     const preview = document.querySelector("#preview");
@@ -70,6 +79,17 @@
     const print = document.querySelector("#print");
     let generatedHtml = "";
     let posterTitle = "poster";
+
+    const childhoodCancerPrompt = `Create an accessible, compassionate childhood cancer awareness poster for families and communities. Explain that childhood cancer includes many distinct diseases and that a statistic cannot predict an individual child's outcome. You may include the NCI U.S. estimate of 14,910 diagnoses among people ages 0-19 in 2024 and the estimate that inherited cancer-predisposition variants account for about 8-10% of childhood cancers overall; clearly label the population, year, and that inherited-risk share varies by cancer type. Encourage families to discuss diagnosis, testing, treatment, clinical trials, and follow-up with a pediatric oncology team. Do not recommend a treatment, imply screening is for all children, blame families, promise a cure, or provide personal prognosis. Use a calm, hopeful but not promissory design, high contrast, large readable type, and a medically respectful visual. Include accessible alt text, a plain-text copy, and a brief note that this is educational information, not medical advice. Cite: NCI, Cancer in Children and Adolescents (https://www.cancer.gov/types/childhood-cancers/child-adolescent-cancers-fact-sheet); ACS, Childhood Leukemia Survival Rates (https://www.cancer.org/cancer/types/leukemia-in-children/detection-diagnosis-staging/survival-rates.html). Create a draft only; do not publish or share it.`;
+
+    promptPreset.addEventListener("change", () => {
+      if (promptPreset.value === "childhood-cancer") {
+        promptField.value = childhoodCancerPrompt;
+        promptField.focus();
+        status.textContent = "Childhood cancer awareness brief loaded. Review or edit it before generating.";
+      }
+    });
+    promptPreset.dispatchEvent(new Event("change"));
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -85,7 +105,7 @@
         const response = await fetch("/api/poster/generate", {
           method: "POST",
           headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({prompt}),
+          body: JSON.stringify({prompt, preset: promptPreset.value || null}),
         });
         const result = await response.json();
         if (!response.ok) throw new Error(result.error || "Poster generation failed.");
@@ -96,7 +116,9 @@
         empty.hidden = true;
         download.disabled = false;
         print.disabled = false;
-        status.textContent = "Poster ready. Review the details before printing or sharing.";
+        status.textContent = result.generation_mode === "reviewed-template"
+          ? "Reviewed childhood-cancer poster ready. Check the facts and layout before printing or sharing."
+          : "Poster ready. Review all generated details before printing or sharing.";
       } catch (error) {
         status.className = "status error";
         status.textContent = error.message;

@@ -1,0 +1,87 @@
+name: Publish Instagram poster
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_account_alias:
+        description: Exact human-readable alias for the configured Instagram account
+        required: true
+        type: string
+      poster_asset_path:
+        description: JPEG poster path inside assets/
+        required: true
+        type: string
+        default: assets/climate-change-instagram-poster.jpg
+      caption_file_path:
+        description: Caption and alt-text file path inside assets/
+        required: true
+        type: string
+        default: assets/climate-change-instagram-caption.txt
+      public_image_url:
+        description: Optional for preview; publishing requires a publicly fetchable HTTPS JPEG URL without query tokens
+        required: false
+        default: ""
+        type: string
+      approval:
+        description: Choose PUBLISH only after reviewing the preview
+        required: true
+        type: choice
+        options:
+          - NO
+          - PUBLISH
+        default: NO
+
+permissions:
+  contents: read
+
+concurrency:
+  group: instagram-climate-poster-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out poster and publisher
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Preview exact post without network access
+        env:
+          IG_PUBLISH_APPROVAL: NO
+          IG_TARGET_ACCOUNT_ALIAS: ${{ inputs.target_account_alias }}
+          IG_POSTER_ASSET_PATH: ${{ inputs.poster_asset_path }}
+          IG_CAPTION_FILE_PATH: ${{ inputs.caption_file_path }}
+          IG_IMAGE_URL: ${{ inputs.public_image_url }}
+        run: python scripts/publish_instagram.py | tee -a "$GITHUB_STEP_SUMMARY"
+
+  publish:
+    needs: preview
+    if: github.event_name == 'workflow_dispatch' && inputs.approval == 'PUBLISH'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: instagram-production
+    steps:
+      - name: Check out approved poster and publisher
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Publish approved Instagram post
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN || secrets.CAMPAIGN123 }}
+          IG_GRAPH_API_VERSION: ${{ vars.IG_GRAPH_API_VERSION }}
+          IG_IMAGE_URL: ${{ inputs.public_image_url }}
+          IG_PUBLISH_APPROVAL: PUBLISH
+          IG_TARGET_ACCOUNT_ALIAS: ${{ inputs.target_account_alias }}
+          IG_POSTER_ASSET_PATH: ${{ inputs.poster_asset_path }}
+          IG_CAPTION_FILE_PATH: ${{ inputs.caption_file_path }}
+        run: python scripts/publish_instagram.py

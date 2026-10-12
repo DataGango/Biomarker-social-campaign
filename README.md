@@ -27,7 +27,19 @@ The ingester records per-source failures and continues to the remaining pages. I
 python server.py
 ```
 
-Open <http://127.0.0.1:8765/dashboard.html>. The server binds only to localhost and serves the dashboard, research brief, and ingested source files; it does not expose `.env` or Python source code.
+Open <http://127.0.0.1:8765/>. The dashboard links to the treatment-plan discussion guide, poster maker, and state-based pediatric cancer care directory. The care directory uses the live Children's Oncology Group member locator and links separately to NCI's broader cancer-center directory. The server binds only to localhost and does not expose `.env` or Python source code.
+
+## Project Agents and Prompts
+
+Repository-level VS Code agent roles are in `.github/agents/`, with reusable commands in `.github/prompts/`:
+
+- **RAG Dashboard Builder** · `.github/prompts/create-dashboard-from-rag.prompt.md` creates source-grounded features in the existing `dashboard.html` landing page.
+- **Current and Future Treatment Research** · `.github/prompts/research-current-and-future-childhood-cancer-treatment.prompt.md` separates established care from investigational directions and requires dated source citations; it does not create an individual treatment plan.
+- **Social Campaign Creator** · `.github/prompts/create-social-campaign.prompt.md` prepares verified, platform-specific drafts and assets for review.
+- **Childhood Cancer Awareness Poster** · `.github/prompts/create-childhood-cancer-awareness-poster.prompt.md` creates a family-focused, source-grounded poster draft and explicitly does not publish it.
+- **Dashboard Release Manager** · `.github/prompts/deploy-dashboard-release.prompt.md` runs quality/security gates and deploys only to a specifically approved target.
+
+Production deployment and social publication are separate gated actions. Campaign and deployment prompts require explicit approval of the exact content, destination, and environment; the prompts do not create credentials or authorize publication by themselves.
 
 ## Use the prompt-driven poster agent
 

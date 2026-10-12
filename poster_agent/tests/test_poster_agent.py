@@ -44,6 +44,15 @@ class PosterAgentTests(unittest.TestCase):
         self.assertIn("<title>Community Science Day</title>", result["html"])
         self.assertEqual(post.call_args.kwargs["headers"]["Authorization"], "Bearer test-key")
 
+    def test_childhood_cancer_preset_renders_without_api_key(self):
+        with patch.dict("os.environ", {}, clear=True):
+            result = PosterAgent().generate_childhood_cancer_preset()
+
+        self.assertEqual(result["generation_mode"], "reviewed-template")
+        self.assertIn("Childhood cancer is not one disease", result["html"])
+        self.assertIn("14,910 diagnoses", result["html"])
+        self.assertIn("cancer.gov/types/childhood-cancers", result["html"])
+
     def test_unknown_theme_falls_back_to_safe_theme(self):
         invalid_theme = dict(SAMPLE_POSTER, theme="body{background:red}")
         validated = PosterAgent._validate_content(invalid_theme)

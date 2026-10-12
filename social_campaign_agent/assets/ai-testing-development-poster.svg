@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title desc">
+  <title id="title">AI in the Software Delivery Loop</title>
+  <desc id="desc">A poster for software engineers and QA professionals. It recommends grounding AI tasks in current project context, delegating bounded work to coding agents, using Playwright Test Agents to plan and generate tests and investigate failures, and reviewing permissions, diffs, test results, and risks. It emphasizes that people remain accountable and provides links to Playwright, Model Context Protocol, and NIST AI Risk Management Framework sources.</desc>
+  <defs>
+    <pattern id="grid" width="34" height="34" patternUnits="userSpaceOnUse">
+      <path d="M34 0H0V34" fill="none" stroke="#173934" stroke-opacity=".055" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1080" height="1350" fill="#f2f1e8"/>
+  <rect width="1080" height="1350" fill="url(#grid)"/>
+  <rect width="1080" height="17" fill="#d5a73d"/>
+
+  <text x="74" y="76" fill="#37645a" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" letter-spacing="3">ENGINEERING • QUALITY • HUMAN JUDGMENT</text>
+  <text x="74" y="166" fill="#142f2c" font-family="Georgia, 'Times New Roman', serif" font-size="62" font-weight="700">AI in the software</text>
+  <text x="74" y="236" fill="#b44d38" font-family="Georgia, 'Times New Roman', serif" font-size="62" font-weight="700">delivery loop.</text>
+  <text x="77" y="282" fill="#29443f" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Assist the work. Verify the result. Keep people accountable.</text>
+
+  <g aria-label="Workflow diagram">
+    <path d="M111 355V1002" fill="none" stroke="#99b4a5" stroke-width="3" stroke-dasharray="5 9"/>
+    <circle cx="111" cy="370" r="27" fill="#142f2c"/><text x="111" y="378" fill="#f2f1e8" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">01</text>
+    <circle cx="111" cy="524" r="27" fill="#37645a"/><text x="111" y="532" fill="#ffffff" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">02</text>
+    <circle cx="111" cy="685" r="27" fill="#b44d38"/><text x="111" y="693" fill="#ffffff" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">03</text>
+    <circle cx="111" cy="852" r="27" fill="#d5a73d"/><text x="111" y="860" fill="#142f2c" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">04</text>
+  </g>
+
+  <text x="163" y="365" fill="#b44d38" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="2">GROUND THE TASK</text>
+  <text x="163" y="401" fill="#142f2c" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700">Bring in current requirements, repository guidance,</text>
+  <text x="163" y="433" fill="#142f2c" font-family="Arial, Helvetica, sans-serif" font-size="23">and test history. Check sources and freshness.</text>
+
+  <text x="163" y="519" fill="#37645a" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="2">DELEGATE BOUNDED WORK</text>
+  <text x="163" y="555" fill="#142f2c" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700">Give coding agents a clear task, constraints,</text>
+  <text x="163" y="587" fill="#142f2c" font-family="Arial, Helvetica, sans-serif" font-size="23">expected output, and only the tools they need.</text>
+
+  <text x="163" y="680" fill="#b44d38" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="2">TURN FLOWS INTO TEST EVIDENCE</text>
+  <text x="163" y="716" fill="#142f2c" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Playwright Test Agents: planner → generator → healer.</text>
+  <text x="163" y="748" fill="#29443f" font-family="Arial, Helvetica, sans-serif" font-size="20">Plan scenarios, create tests, investigate failures.</text>
+  <text x="163" y="778" fill="#29443f" font-family="Arial, Helvetica, sans-serif" font-size="20">Review generated plans, tests, and suggested fixes.</text>
+
+  <text x="163" y="847" fill="#8b6821" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="2">REVIEW RISK BEFORE ACTION</text>
+  <text x="163" y="883" fill="#142f2c" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Use MCP to connect tools and data; scope access.</text>
+  <text x="163" y="915" fill="#29443f" font-family="Arial, Helvetica, sans-serif" font-size="20">Inspect diffs, test results, security, and privacy.</text>
+  <text x="163" y="945" fill="#29443f" font-family="Arial, Helvetica, sans-serif" font-size="20">People decide what is merged, shipped, or acted on.</text>
+
+  <rect x="74" y="1010" width="932" height="148" rx="5" fill="#142f2c"/>
+  <path d="M74 1010h12v148H74z" fill="#d5a73d"/>
+  <text x="111" y="1057" fill="#e4c46d" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="2.5">START SMALL</text>
+  <text x="111" y="1099" fill="#f2f1e8" font-family="Georgia, 'Times New Roman', serif" font-size="28" font-weight="700">Choose one low-risk workflow.</text>
+  <text x="111" y="1132" fill="#d7e2d7" font-family="Arial, Helvetica, sans-serif" font-size="18">Define success. Review the evidence. Expand only when it earns trust.</text>
+
+  <text x="74" y="1201" fill="#37645a" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="2">PRIMARY SOURCES</text>
+  <a href="https://playwright.dev/docs/test-agents" target="_blank" rel="noopener noreferrer">
+    <text x="74" y="1233" fill="#142f2c" font-family="Arial, Helvetica, sans-serif" font-size="15" text-decoration="underline">Playwright Test Agents ↗</text>
+  </a>
+  <a href="https://modelcontextprotocol.io/docs/getting-started/intro" target="_blank" rel="noopener noreferrer">
+    <text x="310" y="1233" fill="#142f2c" font-family="Arial, Helvetica, sans-serif" font-size="15" text-decoration="underline">Model Context Protocol ↗</text>
+  </a>
+  <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener noreferrer">
+    <text x="594" y="1233" fill="#142f2c" font-family="Arial, Helvetica, sans-serif" font-size="15" text-decoration="underline">NIST AI RMF ↗</text>
+  </a>
+  <path d="M74 1260h932" stroke="#9baea1" stroke-width="1"/>
+  <text x="74" y="1294" fill="#536c62" font-family="Arial, Helvetica, sans-serif" font-size="14">AI can assist development and testing; it does not replace verification or accountable engineering judgment.</text>
+</svg>

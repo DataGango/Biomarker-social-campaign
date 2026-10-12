@@ -1,0 +1,90 @@
+name: Publish Instagram Reel
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_account_alias:
+        description: Exact approved Instagram username
+        required: true
+        type: string
+        default: gangopadhyay.poulomi
+      caption_file_path:
+        description: Exact approved plain-text caption inside assets/
+        required: true
+        type: string
+        default: assets/durga-pujo-v2-caption.txt
+      public_video_url:
+        description: Public HTTPS URL of the approved composite MP4
+        required: true
+        type: string
+      video_sha256:
+        description: SHA-256 of the exact approved MP4
+        required: true
+        type: string
+        default: 8bf180395e0588d9f8a5c65ce5bfd71e63674a433b9422a3ee0bf34c422aac66
+      approval:
+        description: Preview first; PUBLISH only for the already approved exact Reel
+        required: true
+        type: choice
+        options:
+          - "NO"
+          - PUBLISH
+        default: "NO"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: instagram-reel-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Preview exact Reel without network access
+        env:
+          IG_PUBLISH_APPROVAL: "NO"
+          IG_TARGET_ACCOUNT_ALIAS: ${{ inputs.target_account_alias }}
+          IG_CAPTION_FILE_PATH: ${{ inputs.caption_file_path }}
+          IG_VIDEO_URL: ${{ inputs.public_video_url }}
+        run: |
+          set -o pipefail
+          python -m scripts.publish_instagram_reel | tee -a "$GITHUB_STEP_SUMMARY"
+
+  publish:
+    needs: preview
+    if: inputs.approval == 'PUBLISH'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: instagram-production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify exact approved hosted bytes
+        env:
+          VIDEO_URL: ${{ inputs.public_video_url }}
+          VIDEO_SHA256: ${{ inputs.video_sha256 }}
+        run: |
+          set -euo pipefail
+          [[ "$VIDEO_SHA256" =~ ^[a-f0-9]{64}$ ]]
+          curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' --max-time 60 "$VIDEO_URL" -o "$RUNNER_TEMP/approved-reel.mp4"
+          printf '%s  %s\n' "$VIDEO_SHA256" "$RUNNER_TEMP/approved-reel.mp4" | sha256sum --check
+      - name: Publish approved Reel once through Meta
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN || secrets.CAMPAIGN123 }}
+          IG_GRAPH_API_VERSION: v26.0
+          IG_PUBLISH_APPROVAL: PUBLISH
+          IG_TARGET_ACCOUNT_ALIAS: ${{ inputs.target_account_alias }}
+          IG_CAPTION_FILE_PATH: ${{ inputs.caption_file_path }}
+          IG_VIDEO_URL: ${{ inputs.public_video_url }}
+        run: |
+          set -o pipefail
+          python -m scripts.publish_instagram_reel | tee -a "$GITHUB_STEP_SUMMARY"

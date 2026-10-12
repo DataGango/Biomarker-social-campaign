@@ -1,0 +1,10 @@
+AI is moving into everyday software development and testing. The key is making its work reviewable.
+
+Ground tasks in current project context. Delegate bounded work to coding agents. Use tools such as Playwright Test Agents to plan scenarios, generate tests, and investigate failures. Connect tools and data through MCP, and review permissions, diffs, and test results before acting.
+
+RAG can help surface relevant project context, but retrieved material and generated output still need verification. Start with one low-risk workflow, define what success looks like, and keep people accountable for what gets merged or shipped.
+
+Sources:
+Playwright Test Agents: https://playwright.dev/docs/test-agents
+Model Context Protocol: https://modelcontextprotocol.io/docs/getting-started/intro
+NIST AI Risk Management Framework: https://www.nist.gov/itl/ai-risk-management-framework

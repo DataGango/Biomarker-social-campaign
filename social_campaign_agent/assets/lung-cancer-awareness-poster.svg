@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350">
+  <rect width="1080" height="1350" fill="#f4f1e8"/>
+  <path d="M0 0h1080v30H0z" fill="#176b62"/>
+  <circle cx="910" cy="178" r="154" fill="#e6a24c" opacity=".18"/>
+  <circle cx="910" cy="178" r="112" fill="none" stroke="#176b62" stroke-width="3" opacity=".45"/>
+  <text x="76" y="100" fill="#176b62" font-family="Arial, sans-serif" font-size="23" font-weight="700" letter-spacing="2">LUNG CANCER AWARENESS</text>
+  <text x="76" y="198" fill="#163b3a" font-family="Georgia, serif" font-size="67" font-weight="700">Know your risk.</text>
+  <text x="76" y="278" fill="#163b3a" font-family="Georgia, serif" font-size="67" font-weight="700">Ask about</text>
+  <text x="76" y="358" fill="#163b3a" font-family="Georgia, serif" font-size="67" font-weight="700">screening.</text>
+  <text x="78" y="411" fill="#385b58" font-family="Arial, sans-serif" font-size="27">Screening is not the same as diagnosis.</text>
+
+  <g transform="translate(728 122)" fill="none" stroke="#176b62" stroke-width="11" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M106 26v112m0-55L61 126M106 83l48 43"/>
+    <path d="M58 127c-29 10-49 39-54 78-6 43 6 78 35 85 31 8 58-15 63-49l4-95" fill="#d8e8df"/>
+    <path d="M155 127c29 10 49 39 54 78 6 43-6 78-35 85-31 8-58-15-63-49l-4-95" fill="#f1d6bd" stroke="#b85f48"/>
+    <path d="M20 191c20 1 39 11 52 27m118-27c-20 1-39 11-52 27" stroke-width="6" opacity=".7"/>
+  </g>
+
+  <rect x="64" y="500" width="952" height="470" rx="18" fill="#fffdf8" stroke="#d7d6ca" stroke-width="2"/>
+  <path d="M64 518q0-18 18-18h13v470H82q-18 0-18-18z" fill="#d66b4b"/>
+  <text x="126" y="573" fill="#176b62" font-family="Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="1.5">WHO SHOULD ASK ABOUT YEARLY LOW-DOSE CT?</text>
+  <text x="126" y="650" fill="#163b3a" font-family="Georgia, serif" font-size="39" font-weight="700">Adults age 50-80</text>
+  <text x="126" y="690" fill="#385b58" font-family="Arial, sans-serif" font-size="24">with a 20 pack-year or greater smoking history,</text>
+  <text x="126" y="727" fill="#385b58" font-family="Arial, sans-serif" font-size="24">who smoke now or quit within the past 15 years.</text>
+  <line x1="126" y1="760" x2="944" y2="760" stroke="#d7d6ca" stroke-width="2"/>
+  <circle cx="144" cy="812" r="8" fill="#d66b4b"/>
+  <text x="170" y="821" fill="#163b3a" font-family="Arial, sans-serif" font-size="24" font-weight="700">A pack-year = 1 pack a day for 1 year.</text>
+  <circle cx="144" cy="868" r="8" fill="#d66b4b"/>
+  <text x="170" y="877" fill="#163b3a" font-family="Arial, sans-serif" font-size="24">Screening has potential benefits and harms.</text>
+  <circle cx="144" cy="924" r="8" fill="#d66b4b"/>
+  <text x="170" y="933" fill="#163b3a" font-family="Arial, sans-serif" font-size="24">Ask a health professional what is right for you.</text>
+
+  <rect x="0" y="1010" width="1080" height="340" fill="#163b3a"/>
+  <path d="M0 1010h1080v9H0z" fill="#e6a24c"/>
+  <text x="76" y="1083" fill="#f4f1e8" font-family="Georgia, serif" font-size="37" font-weight="700">Know the signs. Know your options.</text>
+  <text x="78" y="1134" fill="#dce9df" font-family="Arial, sans-serif" font-size="22">New or persistent symptoms? Contact a health professional;</text>
+  <text x="78" y="1167" fill="#dce9df" font-family="Arial, sans-serif" font-size="22">screening is for people without symptoms.</text>
+  <text x="78" y="1240" fill="#f4f1e8" font-family="Arial, sans-serif" font-size="18" font-weight="700">Sources: CDC, Lung Cancer Screening (2026)  |  National Cancer Institute, Lung Cancer Screening PDQ</text>
+  <text x="78" y="1282" fill="#bacfc7" font-family="Arial, sans-serif" font-size="17">General education only; not a substitute for medical advice.</text>
+  <text x="78" y="1318" fill="#bacfc7" font-family="Arial, sans-serif" font-size="15">cdc.gov/lung-cancer/screening  |  cancer.gov/types/lung/patient/lung-screening-pdq</text>
+</svg>
