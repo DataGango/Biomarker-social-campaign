@@ -1,5 +1,10 @@
 import unittest
 from pathlib import Path
+from unittest.mock import Mock
+from http.server import ThreadingHTTPServer
+from threading import Thread
+from urllib.request import Request, urlopen
+import json
 
 from server import DashboardHandler, PROJECT_DIR
 
@@ -86,6 +91,54 @@ class DashboardStaticAccessTests(unittest.TestCase):
     def test_ingested_source_artifact_is_available(self):
         path = Path(DashboardHandler.translate_path(None, "/data/cancer_genetics.txt"))
         self.assertEqual(path, PROJECT_DIR / "data" / "cancer_genetics.txt")
+
+
+class DashboardAgentApiTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.previous_orchestrator = DashboardHandler.orchestrator
+        cls.orchestrator = Mock()
+        cls.orchestrator.list_agents.return_value = [{"name": "Test Agent"}]
+        cls.orchestrator.run.return_value = {"status": "completed", "result": {"ok": True}}
+        cls.orchestrator.run_workflow.return_value = {"status": "completed", "workflow": "test"}
+        DashboardHandler.orchestrator = cls.orchestrator
+        cls.server = ThreadingHTTPServer(("127.0.0.1", 0), DashboardHandler)
+        cls.thread = Thread(target=cls.server.serve_forever, daemon=True)
+        cls.thread.start()
+        cls.base_url = "http://127.0.0.1:{}".format(cls.server.server_port)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.server.shutdown()
+        cls.server.server_close()
+        cls.thread.join(timeout=2)
+        DashboardHandler.orchestrator = cls.previous_orchestrator
+
+    def test_agent_registry_endpoint(self):
+        with urlopen(self.base_url + "/api/agents") as response:
+            payload = json.loads(response.read())
+        self.assertEqual(payload["agents"][0]["name"], "Test Agent")
+
+    def test_run_agent_endpoint_delegates_registered_task(self):
+        request = Request(
+            self.base_url + "/api/agents/run",
+            data=json.dumps({"task_type": "research_question", "payload": {"question": "test"}}).encode(),
+            headers={"Content-Type": "application/json"},
+        )
+        with urlopen(request) as response:
+            payload = json.loads(response.read())
+        self.assertTrue(payload["result"]["ok"])
+        self.orchestrator.run.assert_called_with("research_question", {"question": "test"})
+
+    def test_agent_endpoint_rejects_malformed_contract(self):
+        request = Request(
+            self.base_url + "/api/agents/run",
+            data=json.dumps({"task_type": "research_question", "payload": []}).encode(),
+            headers={"Content-Type": "application/json"},
+        )
+        with self.assertRaises(Exception) as raised:
+            urlopen(request)
+        self.assertEqual(raised.exception.code, 400)
 
 
 if __name__ == "__main__":
