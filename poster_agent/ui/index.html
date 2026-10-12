@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f1eb">
+  <title>Prompt-driven Poster Maker</title>
+  <style>
+    :root{color-scheme:light;--ink:#1c302d;--muted:#60716b;--paper:#f3f1eb;--white:#fff;--line:#d8dfd8;--green:#176b56}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 "Avenir Next",Avenir,"Segoe UI",sans-serif}
+    .shell{max-width:1240px;margin:auto;padding:24px}
+    header{display:flex;justify-content:space-between;gap:16px;align-items:center;border-bottom:1px solid var(--line);padding:8px 0 18px}
+    header a{color:var(--green);font-weight:700}
+    h1,h2{font-family:Georgia,"Times New Roman",serif;font-weight:400}
+    h1{font-size:clamp(36px,5vw,58px);line-height:1;margin:34px 0 10px}
+    .intro{color:var(--muted);margin:0 0 24px}
+    .workspace{display:grid;grid-template-columns:minmax(280px,.72fr) minmax(0,1.28fr);gap:24px;align-items:start}
+    .panel{background:var(--white);border:1px solid var(--line);padding:22px}
+    label{display:block;font-weight:700;font-size:13px;margin:0 0 8px}
+    textarea{width:100%;min-height:200px;resize:vertical;padding:12px;border:1px solid var(--line);font:inherit}
+    textarea:focus{outline:2px solid var(--green);outline-offset:1px}
+    .hint,.status{font-size:12px;color:var(--muted)}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    button{padding:11px 15px;border:1px solid var(--green);background:var(--green);color:white;font:inherit;font-weight:700;cursor:pointer}
+    button.secondary{background:white;color:var(--green)}
+    button:disabled{opacity:.6;cursor:wait}
+    .status{min-height:20px;margin:12px 0 0}
+    .error{color:#9c311d}
+    .preview-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+    .preview-head h2{font-size:26px;margin:0}
+    iframe{width:100%;height:760px;border:1px solid var(--line);background:#ddd}
+    .empty{height:500px;display:grid;place-items:center;text-align:center;color:var(--muted);padding:20px}
+    @media(max-width:780px){.workspace{grid-template-columns:1fr}.shell{padding:16px}iframe{height:680px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header><strong>POSTER MAKER · PROMPT-DRIVEN AGENT</strong><a href="/dashboard.html">Back to research dashboard</a></header>
+    <h1>Make a poster from a prompt.</h1>
+    <p class="intro">Describe the topic, audience, purpose, tone, and any exact facts that must appear. Preview the result, download an editable HTML file, or print/save it as an A3 PDF.</p>
+    <div class="workspace">
+      <section class="panel" aria-labelledby="prompt-title">
+        <h2 id="prompt-title">Your brief</h2>
+        <form id="poster-form">
+          <label for="prompt">What should the poster say and feel like?</label>
+          <textarea id="prompt" maxlength="1500" required placeholder="Create a welcoming community health fair poster for families. Include the date, time, location, and activities supplied in my prompt. Use a warm, friendly style."></textarea>
+          <p class="hint">Up to 1,500 characters. Include exact event details or source notes when accuracy matters.</p>
+          <div class="actions"><button id="generate" type="submit">Create poster</button></div>
+        </form>
+        <p id="status" class="status" role="status"></p>
+      </section>
+      <section class="panel" aria-labelledby="preview-title">
+        <div class="preview-head"><h2 id="preview-title">Preview</h2>
+          <div class="actions"><button class="secondary" id="download" type="button" disabled>Download HTML</button><button class="secondary" id="print" type="button" disabled>Print / save PDF</button></div>
+        </div>
+        <div id="empty" class="empty">Your generated poster preview will appear here.</div>
+        <iframe id="preview" title="Generated poster preview" hidden></iframe>
+      </section>
+    </div>
+  </div>
+  <script>
+    const form = document.querySelector("#poster-form");
+    const promptField = document.querySelector("#prompt");
+    const generateButton = document.querySelector("#generate");
+    const status = document.querySelector("#status");
+    const preview = document.querySelector("#preview");
+    const empty = document.querySelector("#empty");
+    const download = document.querySelector("#download");
+    const print = document.querySelector("#print");
+    let generatedHtml = "";
+    let posterTitle = "poster";
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const prompt = promptField.value.trim();
+      if (!prompt) return;
+      generateButton.disabled = true;
+      generateButton.textContent = "Creating…";
+      status.className = "status";
+      status.textContent = "The agent is organizing your content and designing the layout.";
+      download.disabled = true;
+      print.disabled = true;
+      try {
+        const response = await fetch("/api/poster/generate", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({prompt}),
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || "Poster generation failed.");
+        generatedHtml = result.html;
+        posterTitle = result.poster.title || "poster";
+        preview.srcdoc = generatedHtml;
+        preview.hidden = false;
+        empty.hidden = true;
+        download.disabled = false;
+        print.disabled = false;
+        status.textContent = "Poster ready. Review the details before printing or sharing.";
+      } catch (error) {
+        status.className = "status error";
+        status.textContent = error.message;
+      } finally {
+        generateButton.disabled = false;
+        generateButton.textContent = "Create poster";
+      }
+    });
+
+    download.addEventListener("click", () => {
+      const blob = new Blob([generatedHtml], {type: "text/html;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = `${posterTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "poster"}.html`;
+      anchor.click();
+      URL.revokeObjectURL(url);
+    });
+
+    print.addEventListener("click", () => preview.contentWindow.print());
+  </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+.env
+__pycache__/
+*.py[cod]
+data/*.txt
+data/cancer_biomarkers.pdf

@@ -1,0 +1,4 @@
+[submodule "childhood-cancer-site"]
+	path = childhood-cancer-site
+	url = https://github.com/DataGango/Biomarker.git
+	branch = biomarker
