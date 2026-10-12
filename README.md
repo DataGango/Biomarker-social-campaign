@@ -2,6 +2,8 @@
 
 A local retrieval-augmented generation (RAG) assistant over the public source files in `data/`. It retrieves relevant passages, sends those passages to a configured OpenAI-compatible chat-completions endpoint, and returns an educational answer with source URLs. This uses an existing language model API; it does not train a new foundation model.
 
+For the product overview, repository code map, architecture, configuration, agent protocols, safety boundaries, and known deployment gaps, see [Product and Technical Guide](PRODUCT_AND_TECHNICAL_GUIDE.md).
+
 ## Setup
 
 ```sh
@@ -40,6 +42,39 @@ Repository-level VS Code agent roles are in `.github/agents/`, with reusable com
 - **Dashboard Release Manager** · `.github/prompts/deploy-dashboard-release.prompt.md` runs quality/security gates and deploys only to a specifically approved target.
 
 Production deployment and social publication are separate gated actions. Campaign and deployment prompts require explicit approval of the exact content, destination, and environment; the prompts do not create credentials or authorize publication by themselves.
+
+## Multi-Agent Runtime, MCP, and A2A
+
+The shared in-process orchestrator exposes bounded task types for source-grounded research, a reviewed poster draft, read-only codebase search, and campaign drafts. It has no task that publishes, schedules, sends messages, diagnoses, or prescribes.
+
+Start the MCP stdio server for a local MCP client:
+
+```sh
+python -m multi_agent.mcp_server
+```
+
+Start the A2A 1.0 JSON-RPC agent service separately:
+
+```sh
+python -m multi_agent.a2a_server
+```
+
+The A2A Agent Card is available at `http://127.0.0.1:8767/.well-known/agent-card.json`. The dashboard HTTP API exposes `GET /api/agents`, `POST /api/agents/run`, and `POST /api/agents/workflow` when `server.py` is running.
+
+## Free Hosting
+
+The static childhood-cancer field guide is already published at <https://datagango.github.io/Biomarker/>. The Python dashboard is a separate application; GitHub Pages cannot run its Python server or API. A Render free-tier blueprint is provided in `render.yaml` for the dashboard service. To deploy it, sign in to Render, create a Blueprint from this repository/branch, review the `biomarker-research-dashboard` service, and deploy. The blueprint disables automatic deploys; trigger a deploy from Render after reviewing changes.
+
+The free service starts without `OPENAI_API_KEY`, so the static dashboard, research index refresh, codebase search, and offline reviewed poster preset can run, but LLM-backed answers and custom poster generation remain unavailable. Do not add an API key until authentication and abuse/rate-limit protection are in place. Render's free filesystem is ephemeral and free services may sleep; refreshed source cache is not guaranteed to persist across restarts. MCP stdio is local-process only, and A2A is a separate service not included in this single-service blueprint. A Render account and user authorization are required to create the hosted service; repository configuration alone does not deploy it.
+
+Run the deterministic offline evals and agent/protocol tests:
+
+```sh
+python -m multi_agent.run_evals
+python -m unittest tests.test_multi_agent tests.test_multi_agent_protocols -v
+```
+
+The eval CLI injects a fixed research fixture and does not require model credentials or network access. All generated poster and campaign content remains `DRAFT / NEEDS REVIEW` until separately approved.
 
 ## Use the prompt-driven poster agent
 
