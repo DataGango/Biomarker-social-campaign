@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title desc">
+  <title id="title">The Planet Is Warming</title>
+  <desc id="desc">A climate awareness poster explaining that human activities, especially burning fossil fuels, are warming the planet. It suggests choosing walking, cycling, or transit where practical, saving energy, and reducing food waste. It invites readers to choose one action and cites the IPCC Sixth Assessment Synthesis Report.</desc>
+  <defs>
+    <clipPath id="earth-clip"><circle cx="811" cy="374" r="224"/></clipPath>
+    <pattern id="grain" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".7" fill="#f5f0df" opacity=".14"/></pattern>
+  </defs>
+  <rect width="1080" height="1350" fill="#112f2e"/>
+  <rect width="1080" height="1350" fill="url(#grain)"/>
+  <path d="M0 0h1080v18H0z" fill="#e3bb53"/>
+  <path d="M0 18h1080" stroke="#ffffff" stroke-opacity=".13"/>
+
+  <text x="78" y="86" fill="#d5e0d2" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" letter-spacing="3">CLIMATE • EVIDENCE • ACTION</text>
+  <text x="78" y="184" fill="#f6f1df" font-family="Georgia, 'Times New Roman', serif" font-size="82" font-weight="700">The planet</text>
+  <text x="78" y="274" fill="#e3bb53" font-family="Georgia, 'Times New Roman', serif" font-size="82" font-weight="700">is warming.</text>
+
+  <circle cx="811" cy="374" r="245" fill="#e3bb53" opacity=".12"/>
+  <circle cx="811" cy="374" r="224" fill="#4c8c79"/>
+  <g clip-path="url(#earth-clip)">
+    <path d="M590 338c46-44 85-50 126-37l34 24-16 39-46 11-20 45-56 20-32-33z" fill="#b8d29b"/>
+    <path d="M752 171l55 8 31 33-11 37-39 13-10 43-37 24-20-33 13-45-23-35z" fill="#b8d29b"/>
+    <path d="M824 324l45-28 54 16 34 43-16 36-38 7-11 49-52 6-31-37 14-42z" fill="#b8d29b"/>
+    <path d="M678 460l38-22 52 18 34 37-20 30-63-2-42-27z" fill="#b8d29b"/>
+    <path d="M574 278c83 27 170 39 261 30 93-9 158-37 210-74M574 437c77-21 156-28 245-19 83 9 156 29 228 64" fill="none" stroke="#dce9c4" stroke-opacity=".45" stroke-width="3"/>
+    <path d="M811 150c-57 66-87 143-87 224s30 158 87 224M811 150c57 66 87 143 87 224s-30 158-87 224" fill="none" stroke="#dce9c4" stroke-opacity=".34" stroke-width="3"/>
+    <path d="M584 379c102-17 226-17 454 0" fill="none" stroke="#dce9c4" stroke-opacity=".28" stroke-width="2"/>
+  </g>
+  <circle cx="811" cy="374" r="224" fill="none" stroke="#f6f1df" stroke-opacity=".65" stroke-width="2"/>
+  <path d="M1004 220c28 28 44 58 50 93M1033 185c42 43 67 91 76 145M1021 484c-22 32-50 56-83 71" fill="none" stroke="#db7656" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="1004" cy="220" r="7" fill="#e3bb53"/>
+  <circle cx="938" cy="555" r="6" fill="#e3bb53"/>
+
+  <path d="M78 621h924" stroke="#d5e0d2" stroke-opacity=".3" stroke-width="2"/>
+  <text x="78" y="681" fill="#e3bb53" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" letter-spacing="2.5">THE EVIDENCE</text>
+  <text x="78" y="730" fill="#f6f1df" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700">Human activities, especially burning fossil fuels,</text>
+  <text x="78" y="768" fill="#f6f1df" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700">are warming the planet.</text>
+
+  <text x="78" y="836" fill="#e3bb53" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" letter-spacing="2.5">THREE PLACES TO START</text>
+  <circle cx="91" cy="891" r="15" fill="#e3bb53"/><text x="91" y="898" fill="#112f2e" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700">1</text>
+  <text x="125" y="899" fill="#f6f1df" font-family="Arial, Helvetica, sans-serif" font-size="23">Walk, cycle, or take public transit when practical.</text>
+  <circle cx="91" cy="950" r="15" fill="#e3bb53"/><text x="91" y="957" fill="#112f2e" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700">2</text>
+  <text x="125" y="958" fill="#f6f1df" font-family="Arial, Helvetica, sans-serif" font-size="23">Save energy by switching off what you do not use.</text>
+  <circle cx="91" cy="1009" r="15" fill="#e3bb53"/><text x="91" y="1016" fill="#112f2e" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700">3</text>
+  <text x="125" y="1017" fill="#f6f1df" font-family="Arial, Helvetica, sans-serif" font-size="23">Plan meals to help reduce food waste.</text>
+
+  <rect x="78" y="1075" width="924" height="122" rx="6" fill="#e3bb53"/>
+  <text x="111" y="1125" fill="#112f2e" font-family="Georgia, 'Times New Roman', serif" font-size="31" font-weight="700">Choose one action. Start today.</text>
+  <text x="111" y="1165" fill="#24413c" font-family="Arial, Helvetica, sans-serif" font-size="19">Share it with someone, and ask what your community can do next.</text>
+
+  <path d="M78 1231h924" stroke="#d5e0d2" stroke-opacity=".3" stroke-width="2"/>
+  <text x="78" y="1275" fill="#f6f1df" font-family="Arial, Helvetica, sans-serif" font-size="16">Source: IPCC, Sixth Assessment Synthesis Report (2023), SPM A.1</text>
+  <text x="1002" y="1275" fill="#d5e0d2" text-anchor="end" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="1">GLOBAL WARMING</text>
+  <text x="78" y="1312" fill="#9fb8a9" font-family="Arial, Helvetica, sans-serif" font-size="13">Practical choices help. Wider climate progress also depends on collective action and systemic change.</text>
+</svg>

@@ -1,0 +1,12 @@
+{
+  "name": "biomarker-dashboard-browser-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node run_playwright.mjs",
+    "test:dashboard": "node run_playwright.mjs dashboard.spec.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1"
+  }
+}

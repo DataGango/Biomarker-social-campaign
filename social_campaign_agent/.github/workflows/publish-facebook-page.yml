@@ -1,0 +1,118 @@
+name: Publish Facebook Page Post
+
+on:
+  workflow_dispatch:
+    inputs:
+      media_kind:
+        description: Approved Page media format
+        required: true
+        type: choice
+        options:
+          - photo
+          - reel
+        default: photo
+      page_id:
+        description: Exact numeric Facebook Page ID from the approved Page URL
+        required: true
+        type: string
+        default: "61595341701921"
+      page_name:
+        description: Exact Page name expected from the Page access token
+        required: true
+        type: string
+        default: CHILD & HOPE
+      asset_path:
+        description: Approved image/video path inside assets/
+        required: true
+        type: string
+      caption_file_path:
+        description: Exact approved caption file inside assets/
+        required: true
+        type: string
+      reel_title:
+        description: Reel title (ignored for photo posts)
+        required: false
+        type: string
+        default: "Optogenetics: light and selected neural circuits"
+      approval:
+        description: NO previews without network; PUBLISH only after approval of this exact post
+        required: true
+        type: choice
+        options:
+          - "NO"
+          - PUBLISH
+        default: "NO"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: facebook-page-publish-${{ inputs.page_id }}
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Preview exact Page post without network access
+        env:
+          FB_PUBLISH_APPROVAL: "NO"
+          MEDIA_KIND: ${{ inputs.media_kind }}
+          PAGE_ID: ${{ inputs.page_id }}
+          PAGE_NAME: ${{ inputs.page_name }}
+          ASSET_PATH: ${{ inputs.asset_path }}
+          CAPTION_FILE_PATH: ${{ inputs.caption_file_path }}
+          REEL_TITLE: ${{ inputs.reel_title }}
+        run: |
+          set -euo pipefail
+          python -m scripts.publish_facebook_page \
+            --approval "$FB_PUBLISH_APPROVAL" \
+            --media-kind "$MEDIA_KIND" \
+            --page-id "$PAGE_ID" \
+            --page-name "$PAGE_NAME" \
+            --asset "$ASSET_PATH" \
+            --caption "$CAPTION_FILE_PATH" \
+            --title "$REEL_TITLE" | tee -a "$GITHUB_STEP_SUMMARY"
+
+  publish:
+    needs: preview
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.approval == 'PUBLISH' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: facebook-production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Publish approved Facebook Page post once
+        env:
+          FB_PAGE_ACCESS_TOKEN: ${{ secrets.FB_PAGE_ACCESS_TOKEN }}
+          FB_GRAPH_API_VERSION: ${{ vars.FB_GRAPH_API_VERSION || 'v26.0' }}
+          FB_PRODUCTION_REVIEW_GATE: ${{ vars.FB_PRODUCTION_REVIEW_GATE }}
+          FB_PUBLISH_APPROVAL: PUBLISH
+          MEDIA_KIND: ${{ inputs.media_kind }}
+          PAGE_ID: ${{ inputs.page_id }}
+          PAGE_NAME: ${{ inputs.page_name }}
+          ASSET_PATH: ${{ inputs.asset_path }}
+          CAPTION_FILE_PATH: ${{ inputs.caption_file_path }}
+          REEL_TITLE: ${{ inputs.reel_title }}
+        run: |
+          set -euo pipefail
+          if [[ "$FB_PRODUCTION_REVIEW_GATE" != "enabled" ]]; then
+            echo "Facebook publishing is disabled: verify required reviewers on facebook-production, then set FB_PRODUCTION_REVIEW_GATE=enabled." >&2
+            exit 1
+          fi
+          python -m scripts.publish_facebook_page \
+            --approval "$FB_PUBLISH_APPROVAL" \
+            --media-kind "$MEDIA_KIND" \
+            --page-id "$PAGE_ID" \
+            --page-name "$PAGE_NAME" \
+            --asset "$ASSET_PATH" \
+            --caption "$CAPTION_FILE_PATH" \
+            --title "$REEL_TITLE" | tee -a "$GITHUB_STEP_SUMMARY"

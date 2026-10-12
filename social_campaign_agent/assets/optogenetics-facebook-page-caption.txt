@@ -1,0 +1,9 @@
+Optogenetics uses light-sensitive opsins to study selected neurons. Focused light can increase activity with an excitatory opsin or reduce it with an inhibitory opsin. Researchers adjust pulses and measure circuit responses. This is an educational model, not whole-brain control or treatment.
+
+The 2026 Nobel Prize in Physiology or Medicine was awarded jointly to Karl Deisseroth, Peter Hegemann and Georg Nagel “for their discoveries concerning light-gated ion channels and optogenetics.”
+
+Sources:
+Nobel Prize in Physiology or Medicine 2026, official summary: https://www.nobelprize.org/prizes/medicine/2026/summary/
+Boyden, E. S. et al. (2005), “Millisecond-timescale, genetically targeted optical control of neural activity,” Nature Neuroscience 8, 1263–1268. https://doi.org/10.1038/nn1525
+
+#Optogenetics #Neuroscience #ScienceEducation

@@ -3,3 +3,8 @@ __pycache__/
 *.py[cod]
 data/*.txt
 data/cancer_biomarkers.pdf
+retrieved/
+node_modules/
+test_scripts/test-results/
+test_scripts/playwright-report/
+dashboard/.next/

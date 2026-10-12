@@ -1,5 +1,5 @@
-import os
 from html.parser import HTMLParser
+from pathlib import Path
 
 import requests
 from pypdf import PdfReader
@@ -9,17 +9,19 @@ PDF_URL = (
     "cancer-control/en/booklets-flyers/cancer-biomarkers.pdf"
 )
 
-PDF_PATH = "data/cancer_biomarkers.pdf"
+PROJECT_DIR = Path(__file__).resolve().parent
+DATA_DIR = PROJECT_DIR / "data"
+PDF_PATH = DATA_DIR / "cancer_biomarkers.pdf"
 WEB_URL = "https://www.cancer.org/cancer/types/leukemia-in-children/detection-diagnosis-staging/survival-rates.html"
-WEB_TEXT_PATH = "data/leukemia_survival_rates.txt"
+WEB_TEXT_PATH = DATA_DIR / "leukemia_survival_rates.txt"
 GENETICS_URL = "https://www.cancer.org/cancer/risk-prevention/genetics.html"
-GENETICS_TEXT_PATH = "data/cancer_genetics.txt"
+GENETICS_TEXT_PATH = DATA_DIR / "cancer_genetics.txt"
 CHEMICALS_URL = "https://www.cancer.org/cancer/risk-prevention/chemicals.html"
-CHEMICALS_TEXT_PATH = "data/cancer_chemicals.txt"
+CHEMICALS_TEXT_PATH = DATA_DIR / "cancer_chemicals.txt"
 EARLY_DETECTION_URL = "https://www.cancer.org/research/early-detection-team.html"
-EARLY_DETECTION_TEXT_PATH = "data/acs_early_detection_team.txt"
+EARLY_DETECTION_TEXT_PATH = DATA_DIR / "acs_early_detection_team.txt"
 CHILDHOOD_CANCER_URL = "https://www.cancer.gov/types/childhood-cancers/child-adolescent-cancers-fact-sheet"
-CHILDHOOD_CANCER_TEXT_PATH = "data/childhood_cancer_nci.txt"
+CHILDHOOD_CANCER_TEXT_PATH = DATA_DIR / "childhood_cancer_nci.txt"
 REQUEST_HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
@@ -27,6 +29,28 @@ REQUEST_HEADERS = {
     ),
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
 }
+WEB_SOURCES = [
+    ("CHILDHOOD LEUKEMIA SURVIVAL RATES", WEB_URL, WEB_TEXT_PATH),
+    ("CANCER GENETICS", GENETICS_URL, GENETICS_TEXT_PATH),
+    ("CHEMICALS AND CANCER RISK", CHEMICALS_URL, CHEMICALS_TEXT_PATH),
+    ("ACS EARLY DETECTION TEAM", EARLY_DETECTION_URL, EARLY_DETECTION_TEXT_PATH),
+    ("CHILDHOOD CANCER: NCI FACT SHEET", CHILDHOOD_CANCER_URL, CHILDHOOD_CANCER_TEXT_PATH),
+]
+
+
+def _atomic_write(path, content, *, binary=False):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary_path = path.with_name(path.name + ".tmp")
+    try:
+        if binary:
+            temporary_path.write_bytes(content)
+        else:
+            temporary_path.write_text(content, encoding="utf-8")
+        temporary_path.replace(path)
+    finally:
+        if temporary_path.exists():
+            temporary_path.unlink()
 
 
 class PageTextParser(HTMLParser):
@@ -63,14 +87,11 @@ class PageTextParser(HTMLParser):
 
 
 def download_pdf():
-
-    os.makedirs("data", exist_ok=True)
-
     response = requests.get(PDF_URL, timeout=30)
     response.raise_for_status()
-
-    with open(PDF_PATH, "wb") as f:
-        f.write(response.content)
+    if not response.content.startswith(b"%PDF"):
+        raise ValueError(f"Downloaded content from {PDF_URL} is not a PDF")
+    _atomic_write(PDF_PATH, response.content, binary=True)
 
     print(f"Downloaded: {PDF_PATH}")
 
@@ -94,9 +115,6 @@ def extract_text():
 
 
 def ingest_webpage(url=WEB_URL, text_path=WEB_TEXT_PATH):
-
-    os.makedirs("data", exist_ok=True)
-
     response = requests.get(url, timeout=30, headers=REQUEST_HEADERS)
     response.raise_for_status()
 
@@ -106,11 +124,30 @@ def ingest_webpage(url=WEB_URL, text_path=WEB_TEXT_PATH):
     if not text:
         raise ValueError(f"No readable text found at {url}")
 
-    with open(text_path, "w", encoding="utf-8") as f:
-        f.write(f"Source: {url}\n\n{text}\n")
+    target_path = Path(text_path)
+    if not target_path.is_absolute():
+        target_path = PROJECT_DIR / target_path
+    _atomic_write(target_path, f"Source: {url}\n\n{text}\n")
 
     print(f"Extracted webpage text: {text_path}")
     return text
+
+
+def refresh_sources():
+    """Scrape all configured web sources and report each source outcome."""
+    sources = [("ACS biomarker fact sheet PDF", PDF_URL, PDF_PATH, download_pdf)]
+    sources.extend(
+        (title, url, path, lambda url=url, path=path: ingest_webpage(url, path))
+        for title, url, path in WEB_SOURCES
+    )
+    outcomes = []
+    for title, url, path, fetch in sources:
+        try:
+            fetch()
+            outcomes.append({"title": title, "url": url, "path": str(path), "ok": True, "error": None})
+        except (requests.RequestException, OSError, ValueError) as error:
+            outcomes.append({"title": title, "url": url, "path": str(path), "ok": False, "error": str(error)})
+    return outcomes
 
 
 if __name__ == "__main__":

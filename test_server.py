@@ -9,6 +9,36 @@ class DashboardStaticAccessTests(unittest.TestCase):
         path = Path(DashboardHandler.translate_path(None, "/dashboard.html"))
         self.assertEqual(path, PROJECT_DIR / "dashboard.html")
 
+    def test_treatment_plan_page_is_allowlisted(self):
+        path = Path(DashboardHandler.translate_path(None, "/treatment-plan.html"))
+        self.assertEqual(path, PROJECT_DIR / "treatment-plan.html")
+
+    def test_fundraising_episode_page_is_allowlisted(self):
+        path = Path(DashboardHandler.translate_path(None, "/fundraising-episode.html"))
+        self.assertEqual(path, PROJECT_DIR / "fundraising-episode.html")
+
+    def test_global_health_radio_page_is_allowlisted(self):
+        path = Path(DashboardHandler.translate_path(None, "/radio-channel.html"))
+        self.assertEqual(path, PROJECT_DIR / "radio-channel.html")
+
+    def test_radio_archive_source_pages_are_allowlisted(self):
+        childhood = Path(DashboardHandler.translate_path(None, "/childhood-cancer-site/share/childhood-cancer.html"))
+        nanorobots = Path(DashboardHandler.translate_path(None, "/childhood-cancer-site/share/nanorobots.html"))
+        self.assertEqual(childhood, PROJECT_DIR / "childhood-cancer-site" / "share" / "childhood-cancer.html")
+        self.assertEqual(nanorobots, PROJECT_DIR / "childhood-cancer-site" / "share" / "nanorobots.html")
+
+    def test_fundraising_media_is_allowlisted_but_other_media_is_not(self):
+        audio = Path(DashboardHandler.translate_path(None, "/media/fundraising-episode-01.m4a"))
+        transcript = Path(DashboardHandler.translate_path(None, "/media/fundraising-episode-01.txt"))
+        unknown = Path(DashboardHandler.translate_path(None, "/media/private.mp4"))
+        self.assertEqual(audio, PROJECT_DIR / "media" / "fundraising-episode-01.m4a")
+        self.assertEqual(transcript, PROJECT_DIR / "media" / "fundraising-episode-01.txt")
+        self.assertEqual(unknown, PROJECT_DIR / "__not_found__")
+
+    def test_care_locations_page_is_allowlisted(self):
+        path = Path(DashboardHandler.translate_path(None, "/care-locations.html"))
+        self.assertEqual(path, PROJECT_DIR / "care-locations.html")
+
     def test_poster_agent_route_resolves_to_generator_ui(self):
         path = Path(DashboardHandler.translate_path(None, "/poster-agent/"))
         self.assertEqual(path, PROJECT_DIR / "poster_agent" / "ui" / "index.html")
