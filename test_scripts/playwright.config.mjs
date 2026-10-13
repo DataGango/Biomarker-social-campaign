@@ -15,7 +15,7 @@ export default defineConfig({
     headless: true,
   },
   webServer: {
-    command: `${python} ../server.py --port ${port} --skip-initial-refresh`,
+    command: `${python} ../server.py --port ${port} --data-dir ../tests/fixtures/dashboard_data --skip-initial-refresh`,
     url: `${baseURL}/api/health`,
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,

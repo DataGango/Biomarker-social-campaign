@@ -4,3 +4,4 @@ python-dotenv>=1,<2
 Markdown>=3.7,<4
 mcp>=2.3,<3
 a2a-sdk>=1.2,<2
+fastapi>=0.115,<1

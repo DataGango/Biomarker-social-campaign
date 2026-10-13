@@ -39,7 +39,15 @@ class DashboardSeleniumTests(unittest.TestCase):
         cls.base_url = f"http://127.0.0.1:{cls.port}"
         python = os.environ.get("PYTHON", sys.executable)
         cls.server = subprocess.Popen(
-            [python, str(PROJECT_ROOT / "server.py"), "--port", str(cls.port), "--skip-initial-refresh"],
+            [
+                python,
+                str(PROJECT_ROOT / "server.py"),
+                "--port",
+                str(cls.port),
+                "--data-dir",
+                str(PROJECT_ROOT / "tests" / "fixtures" / "dashboard_data"),
+                "--skip-initial-refresh",
+            ],
             cwd=PROJECT_ROOT,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
