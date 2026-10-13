@@ -92,6 +92,20 @@ class DashboardStaticAccessTests(unittest.TestCase):
         path = Path(DashboardHandler.translate_path(None, "/data/cancer_genetics.txt"))
         self.assertEqual(path, PROJECT_DIR / "data" / "cancer_genetics.txt")
 
+    def test_configured_data_directory_serves_sources_without_allowing_traversal(self):
+        previous_data_dir = DashboardHandler.data_dir
+        fixture_dir = PROJECT_DIR / "tests" / "fixtures" / "dashboard_data"
+        handler = Mock(data_dir=fixture_dir)
+        try:
+            DashboardHandler.data_dir = fixture_dir
+            source = Path(DashboardHandler.translate_path(handler, "/data/childhood_cancer_test.txt"))
+            traversal = Path(DashboardHandler.translate_path(handler, "/data/../agent.py"))
+        finally:
+            DashboardHandler.data_dir = previous_data_dir
+
+        self.assertEqual(source, fixture_dir / "childhood_cancer_test.txt")
+        self.assertEqual(traversal, PROJECT_DIR / "__not_found__")
+
 
 class DashboardAgentApiTests(unittest.TestCase):
     @classmethod

@@ -26,6 +26,7 @@ class DashboardHandler(SimpleHTTPRequestHandler):
     orchestrator: AgentOrchestrator | None = None
     poster_agent: PosterAgent | None = None
     refresh_service: ResearchRefreshService | None = None
+    data_dir: Path = PROJECT_DIR / "data"
 
     def guess_type(self, path):
         if str(path).lower().endswith(".m4a"):
@@ -144,7 +145,11 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             relative = "childhood-cancer-site/index.html"
         if relative in {"poster-agent", "poster-agent/"}:
             relative = "poster_agent/ui/index.html"
-        candidate = (PROJECT_DIR / relative).resolve()
+        data_root = Path(getattr(self, "data_dir", PROJECT_DIR / "data")).resolve()
+        if relative.startswith("data/"):
+            candidate = (data_root / relative.removeprefix("data/")).resolve()
+        else:
+            candidate = (PROJECT_DIR / relative).resolve()
         allowed_root_files = {
             "dashboard.html",
             "treatment-plan.html",
@@ -163,7 +168,7 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             "fundraising-episode-01.mp4",
             "fundraising-episode-01.txt",
         }
-        allowed_data_file = candidate.parent == (PROJECT_DIR / "data").resolve() and (
+        allowed_data_file = candidate.parent == data_root and (
             candidate.suffix == ".txt" or candidate.name == "cancer_biomarkers.pdf"
         )
         site_dir = (PROJECT_DIR / "childhood-cancer-site").resolve()
@@ -224,6 +229,7 @@ def main():
         parser.error("--refresh-interval-hours must be positive")
 
     DashboardHandler.agent = ChildhoodCancerAgent(args.data_dir)
+    DashboardHandler.data_dir = Path(args.data_dir).resolve()
     DashboardHandler.poster_agent = PosterAgent()
     DashboardHandler.orchestrator = build_default_orchestrator(
         research_agent=DashboardHandler.agent,
