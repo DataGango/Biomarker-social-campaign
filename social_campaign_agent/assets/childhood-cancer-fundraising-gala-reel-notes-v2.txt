@@ -1,10 +1,10 @@
-Status: DRAFT / NEEDS REVIEW. The general request to proceed is not approval of this revised exact media and copy.
+Status: APPROVED FOR ONE IMMEDIATE POST; PUBLICATION BLOCKED. The user reviewed this exact v2 media and caption. Approval does not cover any other campaign item or a recurring schedule.
 
 Campaign item: second item in the poster-then-Reel sequence.
 Facebook Reel title: CCF 42nd Annual Gala | Greenbelt, MD
 Audience: Fairfax-area and broader DMV community. Organic public Page copy; no geographic ad targeting is configured.
-Destination: CHILD & HOPE Facebook Page (eligibility and identity remain unverified).
-Timing: Immediate only after exact-item approval and protected Facebook production approval. No scheduler is supported.
+Destination: CHILD & HOPE Facebook Page, ID 61595341701921 (Page identity and eligibility still require token verification).
+Timing: Immediate only after Page identity verification and protected Facebook production approval. No scheduler is supported.
 Framing: Independent community draft; not an official Children's Cancer Foundation announcement.
 
 Alt text: A 30-second portrait video with deep green, warm ivory, and muted gold typography. It invites Fairfax-area and DMV residents to a fundraising evening for the Children's Cancer Foundation, then explicitly states that the 42nd Annual Gala is in Greenbelt, Maryland, not Fairfax. It lists Saturday, November 7, 2026, 7:00-11:00 PM EST, Martin's Crosswinds, 7400 Greenway Center Dr, Greenbelt, MD 20770. A clear call to buy a ticket, explore sponsorship, or make a donation points to onecau.se/2026ccfgala. The final scenes summarize the Foundation's stated mission, link the official event and mission pages, and say this is an independent draft, not an official event announcement or medical advice.
@@ -15,4 +15,4 @@ Source audit:
 - CCF mission wording is summarized from: https://childrenscancerfoundation.org/who-we-are/mission-and-history/
 - No claim is made about how a particular ticket or donation is allocated, nor about a guaranteed result.
 
-Validation and publishing status: actual vertical MP4 rendered; local no-network NO preview completed for the exact v2 asset, title, and caption. The remote default branch does not contain the required protected publisher workflow; Page identity, required reviewers, and protected credentials are also unverified. Exact-item review is still pending. Do not publish or claim publication unless the exact v2 item is approved and all gates pass.
+Validation and publishing status: actual vertical MP4 rendered; local no-network NO preview passed for the exact v2 asset, title, destination, and caption. The repository's actual default branch is biomarker-campaign-add-manager, and the required protected publisher workflow is absent there and from remote main. Page identity, required reviewers, and protected credentials remain unverified. No post was made; publication requires an active workflow on the default branch and all protected gates to pass.

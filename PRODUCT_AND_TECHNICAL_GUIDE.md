@@ -20,7 +20,7 @@ It is not a clinical decision-support system. It does not diagnose, prescribe, e
 - Research dashboard and source-grounded Q&A.
 - Treatment-plan conversation guide, care-location directory, and mortality-estimate page.
 - Poster generator with an offline reviewed childhood-cancer preset and optional configured language-model generation.
-- Research radio/fundraising episode pages and media.
+- Research radio/fundraising episode pages and media. The GitHub Pages submodule now includes the fundraiser planner, its companion podcast page, and podcast media in its deploy artifact.
 - Multi-agent task routing for research Q&A, poster draft, read-only project search, and campaign draft.
 - MCP tools/resources and A2A 1.0 agent discovery/task protocol adapters.
 
@@ -63,11 +63,11 @@ The diagram separates content drafting from publisher integrations. The orchestr
 | `multi_agent/eval_cases.json` | Versioned deterministic test/evaluation cases. |
 | `codebase_agent/scanner.py` | Workspace discovery and read-only topic search; skips sensitive, generated, and dependency locations. |
 | `poster_agent/` | Poster prompt, model response validation, reviewed preset, theme definitions, safe HTML renderer, and UI. |
-| `social_campaign_agent/` | Campaign publishing workflows, publisher scripts, operational documentation, and mock tests. |
+| `social_campaign_agent/` | Social campaign assets, official-platform publisher scripts, protected workflow support, operational documentation, and mock tests. |
 | `dashboard.html` | Dashboard landing page and browser links to feature pages. |
 | `care-locations.html`, `treatment-plan.html`, `death-estimates.html` | Educational reference pages. |
-| `fundraising.html`, `fundraising-episode.html`, `radio-channel.html`, `media/` | Campaign planner, episode content, radio page, and audio/video assets. |
-| `childhood-cancer-site/` | Separate static field guide, reports, local research assets, and short-video materials. |
+| `fundraising.html`, `fundraising-episode.html`, `radio-channel.html`, `media/` | Python dashboard's campaign planner, episode content, radio page, and audio/video assets. |
+| `childhood-cancer-site/` | Separately deployed static field guide. Its current local commit adds the fundraiser planner, podcast page/media, and homepage links; these changes are not public until pushed and deployed. |
 | `.github/agents/` | Repository agent role definitions, including the new multi-agent orchestrator role. |
 | `.github/skills/` | Reusable task contracts for research, poster drafting, codebase search, and campaign drafting. |
 | `.github/prompts/` | Human-invoked prompt workflows for research and campaign tasks. |
@@ -103,7 +103,7 @@ The system currently runs these agents in-process and sequentially. It does not 
 
 Task contracts are stored in `.github/skills/` and mirrored in `AgentSkill` definitions. The poster drafting skill follows `.github/prompts/create-childhood-cancer-awareness-poster.prompt.md`: source citations, population framing, accessible alt text, disclaimer, and draft-only status. These constraints prevent the app from treating a successful generated asset as approval to publish.
 
-Campaign publication is separate from orchestration. The repository's publisher scripts/workflows require their own inputs, preview mode, protected environments, credentials, and (where configured) human review. The orchestrator deliberately contains no publisher task type and no social platform credentials.
+Campaign publication is separate from orchestration. The in-process orchestrator only creates campaign drafts and has no publisher task type or social credentials. Separately, `social_campaign_agent/scripts/publish_facebook_page.py` supports one Facebook Page photo or Reel post at a time; it verifies the Page token against the supplied Page ID/name, and its `NO` preview makes no network requests. The root `.github/workflows/publish-facebook-page.yml` adds a separate `PUBLISH` job guarded by the `facebook-production` environment and `FB_PRODUCTION_REVIEW_GATE`. This is immediate publication, not a scheduler; there is no four-hour/daily campaign scheduler in this implementation. Instagram publisher scripts also exist, but a workflow is usable only if it is active on the target repository's default branch and configured.
 
 ## 7. Agent Protocols and Local Use
 
@@ -171,11 +171,11 @@ These checks verify deterministic contracts, not clinical correctness of every f
 - The workspace search agent reads source files but only returns bounded matching lines and never copies files through the orchestrator.
 - Symptom collection is not a clinical workflow and is not routed to the RAG model by the agent registry.
 - The research assistant is educational, not a physician, triage service, or prescribing system.
-- Campaign and poster tasks are draft-only. No background task publishes or messages users.
+- Poster generation and campaign drafting do not publish. A separate, manually dispatched protected Facebook Page workflow can publish a single explicitly approved photo or Reel when merged to the default branch and fully configured; it does not support automatic or recurring publication. No background task publishes or messages users.
 - Before exposing API/A2A endpoints beyond localhost, add authentication/authorization, request size/rate limits, audit and retention policy, TLS, per-user workspace scoping, and a threat model.
 
 ## 11. Verified Status and Known Gaps
 
-Implemented in this branch: four explicit agent skills, sequential research-to-campaign handoff, offline eval harness, dashboard API routes, MCP stdio tools/resources, and A2A agent-card/JSON-RPC service. Unit and route behavior should be confirmed by the test suite before deployment.
+Implemented in this checkout: four explicit in-process agent skills, sequential research-to-campaign handoff, offline eval harness, dashboard API routes, MCP stdio tools/resources, A2A agent-card/JSON-RPC service, and a protected manual Facebook Page photo/Reel workflow with publisher mock tests. The Facebook workflow can publish one post immediately; it is not a scheduler. The fundraiser planner/podcast Pages are included in the local Pages submodule commit and deployment artifact, but the parent branch and submodule commits must be pushed and the Pages deployment must complete before those additions are public. Unit, route, publisher, and Pages deployment behavior should be confirmed before release.
 
-Not implemented: multi-process agent workers, autonomous planning/replanning, durable orchestration state, external OpenMetadata/DataHub catalog, clinical prescribing, social auto-publication, or production hosting controls. The requested multi-agent foundation is an in-process bounded orchestration framework, not a claim of a full enterprise agent platform.
+Not implemented: multi-process agent workers, autonomous planning/replanning, durable orchestration state, external OpenMetadata/DataHub catalog, clinical prescribing, unattended social publishing, four-hour/daily social scheduling, or production hosting controls. The Facebook workflow requires the publisher workflow on the default branch, an authorized Page token, verified Page identity, and the configured protected production reviewer gate. The latest fundraising Reel/caption are local review files, not a published post. The requested multi-agent foundation is an in-process bounded orchestration framework, not a claim of a full enterprise agent platform.

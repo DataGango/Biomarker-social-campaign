@@ -18,6 +18,14 @@ Use the bundled campaign files under `social_campaign_agent/`. The primary job i
 7. A personal Facebook profile is not a Facebook Page. Verify destination identity with the authorized platform token; if identity, credentials, active workflow, public media URL, or protected reviewer gate is unavailable, stop at a ready-to-run handoff and state the blocker.
 8. Protect tokens, recipient details, and private media URLs. Never use browser automation, scraping, or undocumented endpoints to publish. Verify an official success response and record the returned ID/permalink before reporting an item as published.
 
+## Recovery When Publishing Is Blocked
+
+- Refresh remote refs and inspect `git status --short --branch` before proposing a push, merge, or workflow dispatch. If the worktree is dirty or the branch has diverged, preserve all local changes; do not reset, rebase, stash, commit, or push without the user's explicit direction.
+- Confirm the workflow file exists on the repository's actual default branch, not only in the local checkout or a feature branch. If it is missing, prepare a reviewable PR path and stop; do not claim it can be dispatched or publish through a local/API fallback.
+- If GitHub CLI or repository access is unauthenticated, ask the user to authenticate directly in their own terminal or browser. Never ask for, receive, or print a password, token, device code, or secret value.
+- Have the user configure missing platform secrets in the protected GitHub Environment settings. Verify only whether required names/gates are configured; never read or echo secret values.
+- Once repository access is restored, recheck the default branch, active workflow, exact approved media/caption/destination, Page token identity, and required reviewers. Run `NO` preview first; use `PUBLISH` only after those checks and exact-item approval pass.
+
 The workflow files under `social_campaign_agent/.github/workflows/` are reference copies. GitHub Actions only runs files under root `.github/workflows/`.
 
 Use `.github/prompts/create-social-campaign.prompt.md` for campaign creation.
