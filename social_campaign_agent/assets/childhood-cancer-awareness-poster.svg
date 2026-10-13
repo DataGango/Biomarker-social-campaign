@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title description">
+  <title id="title">Childhood Cancer Awareness: Listen to every story</title>
+  <desc id="description">An educational poster stating that the most common cancer types among U.S. children and adolescents differ by age group, with an invitation to learn and listen.</desc>
+  <rect width="1080" height="1350" fill="#f4f1e8"/>
+  <rect width="1080" height="14" fill="#d66b4b"/>
+
+  <circle cx="936" cy="180" r="154" fill="#e6a24c" opacity=".2"/>
+  <circle cx="936" cy="180" r="112" fill="none" stroke="#176b62" stroke-width="3" opacity=".5"/>
+  <path d="M901 160h70M901 187h52M901 214h62" stroke="#176b62" stroke-width="8" stroke-linecap="round" opacity=".7"/>
+
+  <text x="76" y="86" fill="#176b62" font-family="Arial, sans-serif" font-size="21" font-weight="700" letter-spacing="2">CHILDHOOD CANCER AWARENESS</text>
+  <text x="76" y="190" fill="#163b3a" font-family="Georgia, serif" font-size="78" font-weight="700">Listen to</text>
+  <text x="76" y="278" fill="#163b3a" font-family="Georgia, serif" font-size="78" font-weight="700">every story.</text>
+  <text x="80" y="334" fill="#385b58" font-family="Arial, sans-serif" font-size="25">Awareness begins with learning and listening.</text>
+
+  <g transform="translate(76 398)">
+    <path d="M30 0h866c17 0 30 13 30 30v179c0 17-13 30-30 30H284l-77 67v-67H30c-17 0-30-13-30-30V30C0 13 13 0 30 0z" fill="#176b62"/>
+    <circle cx="80" cy="79" r="11" fill="#e6a24c"/>
+    <circle cx="80" cy="120" r="11" fill="#e6a24c"/>
+    <circle cx="80" cy="161" r="11" fill="#e6a24c"/>
+    <text x="116" y="89" fill="#fffdf8" font-family="Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="1">LEARN FROM TRUSTED SOURCES</text>
+    <text x="116" y="130" fill="#fffdf8" font-family="Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="1">LISTEN TO CHILDREN AND FAMILIES</text>
+    <text x="116" y="171" fill="#fffdf8" font-family="Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="1">MAKE ROOM FOR EVERY STORY</text>
+    <path d="M790 205c24-28 53-28 77 0" fill="none" stroke="#e6a24c" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <rect x="76" y="752" width="928" height="300" rx="8" fill="#fffdf8" stroke="#d7d6ca" stroke-width="2"/>
+  <rect x="76" y="752" width="12" height="300" fill="#d66b4b"/>
+  <text x="122" y="810" fill="#176b62" font-family="Arial, sans-serif" font-size="19" font-weight="700" letter-spacing="1.5">A FACT TO KNOW</text>
+  <text x="122" y="873" fill="#163b3a" font-family="Georgia, serif" font-size="39" font-weight="700">In the U.S., the most common cancer types</text>
+  <text x="122" y="923" fill="#163b3a" font-family="Georgia, serif" font-size="39" font-weight="700">among children and adolescents differ</text>
+  <text x="122" y="973" fill="#163b3a" font-family="Georgia, serif" font-size="39" font-weight="700">by age group.</text>
+  <text x="122" y="1020" fill="#385b58" font-family="Arial, sans-serif" font-size="18">NCI comparison of common diagnoses from 2016-2020.</text>
+
+  <text x="76" y="1120" fill="#163b3a" font-family="Georgia, serif" font-size="34" font-weight="700">Start with trusted information.</text>
+  <text x="78" y="1167" fill="#385b58" font-family="Arial, sans-serif" font-size="21">Learn. Listen. Support children and families.</text>
+
+  <line x1="76" y1="1203" x2="1004" y2="1203" stroke="#c8c9bc" stroke-width="2"/>
+  <text x="76" y="1244" fill="#163b3a" font-family="Arial, sans-serif" font-size="18" font-weight="700">SOURCE: NATIONAL CANCER INSTITUTE</text>
+  <text x="76" y="1276" fill="#385b58" font-family="Arial, sans-serif" font-size="17">Cancer in Children and Adolescents | Updated Aug 27, 2024</text>
+  <text x="76" y="1310" fill="#385b58" font-family="Arial, sans-serif" font-size="17">cancer.gov/types/childhood-cancers | General education, not medical advice.</text>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title description">
+  <title id="title">One number. Many ages. Different stories.</title>
+  <desc id="description">A dark navy and bright chartreuse childhood cancer awareness poster showing NCI estimated U.S. cancer diagnoses in 2024: 9,620 among children ages 0 to 14 and 5,290 among adolescents ages 15 to 19, totaling 14,910 among people ages 0 to 19. The message explains these are population estimates, not an individual prediction, and invites families to bring questions to a pediatric oncology team.</desc>
+  <rect width="1080" height="1350" fill="#101d3a"/>
+  <path d="M0 0h1080v15H0z" fill="#d7f45b"/>
+  <circle cx="914" cy="201" r="125" fill="none" stroke="#52698e" stroke-width="2"/>
+  <circle cx="914" cy="201" r="91" fill="none" stroke="#52698e" stroke-width="2"/>
+  <circle cx="914" cy="201" r="55" fill="#d7f45b"/>
+  <g fill="#101d3a"><circle cx="898" cy="186" r="5"/><circle cx="930" cy="186" r="5"/><path d="M892 213q22 25 44 0" fill="none" stroke="#101d3a" stroke-width="5" stroke-linecap="round"/></g>
+  <g fill="#36c5c8"><circle cx="795" cy="103" r="7"/><circle cx="1033" cy="269" r="7"/><circle cx="797" cy="296" r="5"/><circle cx="1019" cy="91" r="5"/></g>
+
+  <text x="70" y="86" fill="#d7f45b" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">CHILDHOOD CANCER · AGE-GROUP SNAPSHOT</text>
+  <text x="70" y="178" fill="#f5f7fc" font-family="Georgia, serif" font-size="63" font-weight="700">One number.</text>
+  <text x="70" y="250" fill="#f5f7fc" font-family="Georgia, serif" font-size="63" font-weight="700">Many ages.</text>
+  <text x="70" y="322" fill="#d7f45b" font-family="Georgia, serif" font-size="63" font-weight="700">Different stories.</text>
+  <text x="73" y="369" fill="#b9c7df" font-family="Arial, sans-serif" font-size="20">U.S. estimates show why age-group context matters.</text>
+
+  <text x="72" y="458" fill="#36c5c8" font-family="Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="2.2">ESTIMATED DIAGNOSES · NCI · UNITED STATES · 2024</text>
+  <text x="72" y="558" fill="#f5f7fc" font-family="Georgia, serif" font-size="90" font-weight="700">14,910</text>
+  <text x="76" y="598" fill="#b9c7df" font-family="Arial, sans-serif" font-size="19">people ages 0–19 estimated to be diagnosed with cancer</text>
+
+  <g transform="translate(72 652)">
+    <rect width="936" height="176" rx="5" fill="#1c2e54" stroke="#50658a" stroke-width="2"/>
+    <rect width="17" height="176" fill="#d7f45b"/>
+    <text x="46" y="59" fill="#d7f45b" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="1.5">CHILDREN · AGES 0–14</text>
+    <text x="46" y="133" fill="#ffffff" font-family="Georgia, serif" font-size="66" font-weight="700">9,620</text>
+    <g transform="translate(490 55)" fill="#d7f45b"><circle cx="0" cy="22" r="9"/><circle cx="34" cy="22" r="9"/><circle cx="68" cy="22" r="9"/><circle cx="102" cy="22" r="9"/><circle cx="136" cy="22" r="9"/><circle cx="170" cy="22" r="9"/><circle cx="204" cy="22" r="9"/><circle cx="238" cy="22" r="9"/><circle cx="272" cy="22" r="9"/><circle cx="306" cy="22" r="9"/></g>
+    <text x="490" y="120" fill="#b9c7df" font-family="Arial, sans-serif" font-size="17">estimated diagnoses</text>
+  </g>
+  <g transform="translate(72 849)">
+    <rect width="936" height="176" rx="5" fill="#f4f2e9"/>
+    <rect width="17" height="176" fill="#36c5c8"/>
+    <text x="46" y="59" fill="#172748" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="1.5">ADOLESCENTS · AGES 15–19</text>
+    <text x="46" y="133" fill="#172748" font-family="Georgia, serif" font-size="66" font-weight="700">5,290</text>
+    <g transform="translate(490 55)" fill="#16898d"><circle cx="0" cy="22" r="9"/><circle cx="34" cy="22" r="9"/><circle cx="68" cy="22" r="9"/><circle cx="102" cy="22" r="9"/><circle cx="136" cy="22" r="9"/><circle cx="170" cy="22" r="9"/><circle cx="204" cy="22" r="9"/><circle cx="238" cy="22" r="9"/><circle cx="272" cy="22" r="9"/><circle cx="306" cy="22" r="9"/></g>
+    <text x="490" y="120" fill="#4a5c78" font-family="Arial, sans-serif" font-size="17">estimated diagnoses</text>
+  </g>
+
+  <path d="M72 1064h936" stroke="#50658a" stroke-width="2"/>
+  <text x="72" y="1114" fill="#d7f45b" font-family="Georgia, serif" font-size="29" font-weight="700">Estimates describe populations, not one child's future.</text>
+  <text x="73" y="1154" fill="#b9c7df" font-family="Arial, sans-serif" font-size="18">Cancer types and care needs vary. Ask the pediatric oncology team what applies.</text>
+  <text x="73" y="1215" fill="#f5f7fc" font-family="Arial, sans-serif" font-size="20" font-weight="700">Bring your questions. Get answers in context.</text>
+  <text x="72" y="1270" fill="#36c5c8" font-family="Arial, sans-serif" font-size="14" font-weight="700">SOURCE: NCI, CANCER IN CHILDREN AND ADOLESCENTS · UPDATED AUG. 27, 2024</text>
+  <text x="72" y="1304" fill="#b9c7df" font-family="Arial, sans-serif" font-size="13">General education only; not diagnosis, treatment advice, or an individual prognosis.</text>
+</svg>

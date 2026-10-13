@@ -1,0 +1,3 @@
+Source: https://www.cancer.gov/types/childhood-cancers/child-adolescent-cancers-fact-sheet
+
+Test fixture for dashboard health checks. Childhood cancer includes multiple distinct diseases. Questions about an individual child's diagnosis or care belong with the child's qualified pediatric oncology team.

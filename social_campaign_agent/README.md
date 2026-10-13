@@ -8,7 +8,7 @@ Use `.github/prompts/daily-science-technology-medicine.prompt.md` with the Socia
 
 ## Facebook Page Photos and Reels
 
-Use `.github/workflows/publish-facebook-page.yml` for approved Facebook Page image posts and Reels. It has a no-network `NO` preview job and a separate `PUBLISH` job that uses the protected `facebook-production` environment. Configure that environment with required reviewers before publishing.
+Use the repository-root `.github/workflows/publish-facebook-page.yml` for approved Facebook Page image posts and Reels. GitHub Actions only discovers workflows under the root `.github/workflows/` directory; this package contains the publisher implementation and tests, not a second workflow copy. The workflow has a no-network `NO` preview job and a separate `PUBLISH` job that uses the protected `facebook-production` environment. Configure that environment with required reviewers before publishing.
 
 Required GitHub configuration:
 

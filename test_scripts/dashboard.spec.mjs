@@ -170,7 +170,7 @@ test("Global Health and Technology Radio links from dashboard and fundraiser and
 });
 
 test("dashboard and scraped source cache support conditional revalidation", async ({ request }) => {
-  for (const path of ["/dashboard.html", "/data/childhood_cancer_nci.txt"]) {
+  for (const path of ["/dashboard.html", "/data/childhood_cancer_test.txt"]) {
     const initial = await request.get(path);
     expect(initial.status(), path).toBe(200);
     expect(initial.headers()["cache-control"], path).toContain("max-age=300");

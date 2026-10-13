@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title description">
+  <title id="title">An evening for discovery and hope: Children’s Cancer Foundation 42nd Annual Gala</title>
+  <desc id="description">An independent community-awareness draft for the Children’s Cancer Foundation 42nd Annual Gala, listed for November 7, 2026. It directs viewers to the Foundation’s official event page for current venue and event details and to the official ticket and sponsorship page. It is not an official event announcement.</desc>
+  <rect width="1080" height="1350" fill="#f4f1e8"/>
+  <rect width="1080" height="16" fill="#8f6a35"/>
+
+  <circle cx="904" cy="229" r="183" fill="#e6a24c" opacity=".18"/>
+  <circle cx="904" cy="229" r="137" fill="none" stroke="#315b48" stroke-width="3" opacity=".5"/>
+  <path d="M845 247c34-46 67-46 101 0s67 46 101 0M859 204h90M859 284h90" fill="none" stroke="#56344f" stroke-width="8" stroke-linecap="round" opacity=".76"/>
+
+  <text x="76" y="92" fill="#315b48" font-family="Arial, sans-serif" font-size="21" font-weight="700" letter-spacing="1.6">COMMUNITY AWARENESS · FUNDRAISING EVENT</text>
+  <text x="76" y="204" fill="#253c32" font-family="Georgia, serif" font-size="73" font-weight="700">An evening for</text>
+  <text x="76" y="291" fill="#253c32" font-family="Georgia, serif" font-size="73" font-weight="700">discovery <tspan fill="#8f6a35">&amp;</tspan> hope.</text>
+  <text x="80" y="350" fill="#56344f" font-family="Arial, sans-serif" font-size="25" font-weight="700">Children’s Cancer Foundation · 42nd Annual Gala</text>
+
+  <rect x="76" y="412" width="928" height="311" rx="8" fill="#315b48"/>
+  <text x="120" y="478" fill="#f0cf8c" font-family="Arial, sans-serif" font-size="19" font-weight="700" letter-spacing="1.8">SAVE THE DATE</text>
+  <text x="120" y="569" fill="#fffdf8" font-family="Georgia, serif" font-size="64" font-weight="700">NOVEMBER 7</text>
+  <text x="120" y="623" fill="#fffdf8" font-family="Georgia, serif" font-size="43">2026</text>
+  <line x1="120" y1="655" x2="943" y2="655" stroke="#c5b38f" stroke-width="2" opacity=".8"/>
+  <text x="120" y="693" fill="#f2e9d6" font-family="Arial, sans-serif" font-size="20">Confirm venue and event details with the organizer.</text>
+
+  <text x="76" y="804" fill="#253c32" font-family="Georgia, serif" font-size="39" font-weight="700">Learn more from the Foundation.</text>
+  <text x="78" y="858" fill="#46584d" font-family="Arial, sans-serif" font-size="21">Official event details and current information:</text>
+  <text x="78" y="895" fill="#315b48" font-family="Arial, sans-serif" font-size="20" font-weight="700">childrenscancerfoundation.org/events/gala/</text>
+
+  <rect x="76" y="941" width="928" height="100" rx="6" fill="#ede4d2"/>
+  <text x="104" y="982" fill="#56344f" font-family="Arial, sans-serif" font-size="18" font-weight="700">OFFICIAL TICKETS &amp; SPONSORSHIPS</text>
+  <text x="104" y="1017" fill="#253c32" font-family="Arial, sans-serif" font-size="20">onecau.se/2026ccfgala</text>
+
+  <text x="76" y="1100" fill="#56344f" font-family="Arial, sans-serif" font-size="17" font-weight="700">INDEPENDENT COMMUNITY-AWARENESS DRAFT · NOT AN OFFICIAL ANNOUNCEMENT</text>
+  <line x1="76" y1="1131" x2="1004" y2="1131" stroke="#c8c9bc" stroke-width="2"/>
+  <text x="76" y="1172" fill="#253c32" font-family="Arial, sans-serif" font-size="18" font-weight="700">SOURCES: CHILDREN’S CANCER FOUNDATION</text>
+  <text x="76" y="1206" fill="#46584d" font-family="Arial, sans-serif" font-size="16">Event details: childrenscancerfoundation.org/events/gala/</text>
+  <text x="76" y="1236" fill="#46584d" font-family="Arial, sans-serif" font-size="16">Tickets and sponsorships: onecau.se/2026ccfgala</text>
+  <text x="76" y="1295" fill="#46584d" font-family="Arial, sans-serif" font-size="16">General community information; not medical advice.</text>
+</svg>
