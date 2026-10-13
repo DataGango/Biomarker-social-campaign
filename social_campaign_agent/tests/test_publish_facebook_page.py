@@ -55,9 +55,37 @@ class FacebookPagePublishTests(unittest.TestCase):
         self.assertEqual(self.calls, [])
 
     def test_invalid_approval_makes_no_network_request(self):
-        with self.assertRaisesRegex(PublicationError, "exactly NO or PUBLISH"):
+        with self.assertRaisesRegex(PublicationError, "exactly NO, VERIFY, or PUBLISH"):
             self.publish("photo", approval="yes")
         self.assertEqual(self.calls, [])
+
+    def test_verify_checks_page_identity_without_uploading(self):
+        self.responses = [{"id": "61595341701921", "name": "CHILD & HOPE"}]
+        self.assertIsNone(self.publish("reel", approval="VERIFY"))
+        self.assertEqual(len(self.calls), 1)
+        self.assertEqual(self.calls[0][0], "GET")
+        self.assertNotIn("video_reels", self.calls[0][1])
+
+    def test_oauth_error_reports_safe_code_and_subcode_without_token(self):
+        output = []
+
+        def rejected_token(method, url, headers, body, timeout):
+            self.calls.append((method, url, headers, body, timeout))
+            self.assertEqual(headers["Authorization"], "Bearer secret-token-test")
+            return 401, json.dumps({
+                "error": {
+                    "type": "OAuthException",
+                    "code": 190,
+                    "error_subcode": 463,
+                    "message": "private provider response",
+                }
+            }).encode()
+
+        with self.assertRaisesRegex(PublicationError, "HTTP 401; OAuthException; code 190; subcode 463") as raised:
+            self.publish("photo", approval="VERIFY", transport=rejected_token)
+        self.assertNotIn("secret-token-test", str(raised.exception))
+        self.assertNotIn("private provider response", str(raised.exception))
+        self.assertEqual(len(self.calls), 1)
 
     def test_wrong_page_id_stops_before_upload(self):
         self.responses = [{"id": "1345909531941708", "name": "CHILD & HOPE"}]

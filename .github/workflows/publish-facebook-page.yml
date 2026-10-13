@@ -33,11 +33,12 @@ on:
         type: string
         default: Childhood cancer awareness
       approval:
-        description: Preview first; PUBLISH only after approval of this exact post
+        description: NO previews; VERIFY checks Page identity only; PUBLISH posts this exact item
         required: true
         type: choice
         options:
           - "NO"
+          - VERIFY
           - PUBLISH
         default: "NO"
 
@@ -108,6 +109,39 @@ jobs:
           fi
           python -m scripts.publish_facebook_page \
             --approval PUBLISH \
+            --media-kind "$MEDIA_KIND" \
+            --page-id "$PAGE_ID" \
+            --page-name "$PAGE_NAME" \
+            --asset "$ASSET_PATH" \
+            --caption "$CAPTION_FILE_PATH" \
+            --title "$REEL_TITLE" | tee -a "$GITHUB_STEP_SUMMARY"
+
+  verify_page:
+    needs: preview
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.approval == 'VERIFY' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: facebook-production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify Page token identity without publishing
+        working-directory: social_campaign_agent
+        env:
+          FB_PAGE_ACCESS_TOKEN: ${{ secrets.FB_PAGE_ACCESS_TOKEN }}
+          FB_GRAPH_API_VERSION: ${{ vars.FB_GRAPH_API_VERSION || 'v26.0' }}
+          MEDIA_KIND: ${{ inputs.media_kind }}
+          PAGE_ID: ${{ inputs.page_id }}
+          PAGE_NAME: ${{ inputs.page_name }}
+          ASSET_PATH: ${{ inputs.asset_path }}
+          CAPTION_FILE_PATH: ${{ inputs.caption_file_path }}
+          REEL_TITLE: ${{ inputs.reel_title }}
+        run: |
+          set -euo pipefail
+          python -m scripts.publish_facebook_page \
+            --approval VERIFY \
             --media-kind "$MEDIA_KIND" \
             --page-id "$PAGE_ID" \
             --page-name "$PAGE_NAME" \

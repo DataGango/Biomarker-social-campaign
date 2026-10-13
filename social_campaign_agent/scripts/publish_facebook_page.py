@@ -88,19 +88,34 @@ def _http_transport(
 
 
 def _decode_json(status: int, body: bytes) -> dict[str, object]:
-    if not 200 <= status < 300:
-        raise PublicationError(f"Facebook Graph API returned HTTP {status}; response details were omitted.")
     try:
         payload = json.loads(body)
     except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        if not 200 <= status < 300:
+            raise PublicationError(f"Facebook Graph API returned HTTP {status} with a non-JSON response.") from exc
         raise PublicationError("Facebook returned an unreadable response.") from exc
     if not isinstance(payload, dict):
         raise PublicationError("Facebook returned an unexpected response.")
     error = payload.get("error")
     if isinstance(error, dict):
         code = error.get("code")
-        code_text = f" (code {code})" if isinstance(code, (int, str)) else ""
-        raise PublicationError(f"Facebook rejected the request{code_text}; response details were omitted.")
+        subcode = error.get("error_subcode")
+        error_type = error.get("type")
+        details = [f"HTTP {status}"]
+        if isinstance(error_type, str) and re.fullmatch(r"[A-Za-z][A-Za-z0-9_]{0,63}", error_type):
+            details.append(error_type)
+        if isinstance(code, (int, str)) and re.fullmatch(r"\d{1,12}", str(code)):
+            details.append(f"code {code}")
+        if isinstance(subcode, (int, str)) and re.fullmatch(r"\d{1,12}", str(subcode)):
+            details.append(f"subcode {subcode}")
+        hint = ""
+        if code == 190:
+            hint = " Meta rejected the access token; use a current Page token issued for the approved Page."
+        elif code in {10, 200}:
+            hint = " The token may lack the required Page publishing permissions."
+        raise PublicationError(f"Facebook Graph API rejected the request ({'; '.join(details)}).{hint} Raw response omitted.")
+    if not 200 <= status < 300:
+        raise PublicationError(f"Facebook Graph API returned HTTP {status}; raw response omitted.")
     return payload
 
 
@@ -194,8 +209,8 @@ def publish_page_post(
     output: Callable[[str], None] = print,
     sleep: Callable[[float], None] = time.sleep,
 ) -> str | None:
-    if approval not in {"NO", "PUBLISH"}:
-        raise PublicationError("Approval must be exactly NO or PUBLISH.")
+    if approval not in {"NO", "VERIFY", "PUBLISH"}:
+        raise PublicationError("Approval must be exactly NO, VERIFY, or PUBLISH.")
     if media_kind not in {"photo", "reel"}:
         raise PublicationError("Post type must be photo or reel.")
     if not re.fullmatch(r"\d+", page_id.strip()):
@@ -208,10 +223,13 @@ def publish_page_post(
     if media_kind == "reel" and not title.strip():
         raise PublicationError("Reels require a non-empty title.")
 
-    output("Facebook Page post preview")
+    output("Facebook Page token verification preview" if approval == "VERIFY" else "Facebook Page post preview")
     output(f"Destination Page: {expected_name} (ID {page_id.strip()})")
-    output("Audience: Public Page audience")
-    output("Timing: Immediate after protected GitHub environment approval")
+    if approval == "VERIFY":
+        output("Action: Verify Page token identity only; no post will be created")
+    else:
+        output("Audience: Public Page audience")
+        output("Timing: Immediate after protected GitHub environment approval")
     output(f"Post type: {media_kind}")
     output(f"Asset: {asset.relative_to(ROOT).as_posix()} ({asset.stat().st_size} bytes)")
     if media_kind == "reel":
@@ -233,6 +251,9 @@ def publish_page_post(
     page_payload = _api_json(transport, "GET", f"{api_root}/me?fields=id,name", access_token)
     resolved_page_id = _validate_page(page_payload, page_id.strip(), expected_name)
     output(f"Verified Page identity: {expected_name} (ID {resolved_page_id})")
+    if approval == "VERIFY":
+        output("Page token verification succeeded. No media was uploaded and no post was created.")
+        return None
 
     if media_kind == "photo":
         body, content_type = _multipart_photo(asset, caption)
@@ -335,8 +356,8 @@ def publish_page_post(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Preview or publish an approved Facebook Page photo or Reel.")
-    parser.add_argument("--approval", choices=("NO", "PUBLISH"), default=os.environ.get("FB_PUBLISH_APPROVAL", "NO"))
+    parser = argparse.ArgumentParser(description="Preview, verify Page access, or publish an approved Facebook Page photo or Reel.")
+    parser.add_argument("--approval", choices=("NO", "VERIFY", "PUBLISH"), default=os.environ.get("FB_PUBLISH_APPROVAL", "NO"))
     parser.add_argument("--media-kind", choices=("photo", "reel"), required=True)
     parser.add_argument("--page-id", default=os.environ.get("FB_PAGE_ID", ""))
     parser.add_argument("--page-name", default=os.environ.get("FB_PAGE_NAME", ""))
