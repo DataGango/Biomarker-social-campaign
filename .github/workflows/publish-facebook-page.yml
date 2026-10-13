@@ -93,6 +93,7 @@ jobs:
         working-directory: social_campaign_agent
         env:
           FB_PAGE_ACCESS_TOKEN: ${{ secrets.FB_PAGE_ACCESS_TOKEN }}
+          FB_APP_ACCESS_TOKEN: ${{ secrets.FB_APP_ACCESS_TOKEN }}
           FB_GRAPH_API_VERSION: ${{ vars.FB_GRAPH_API_VERSION || 'v26.0' }}
           FB_PRODUCTION_REVIEW_GATE: ${{ vars.FB_PRODUCTION_REVIEW_GATE }}
           MEDIA_KIND: ${{ inputs.media_kind }}
@@ -127,10 +128,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Verify Page token identity without publishing
+      - name: Verify Page token validity, permissions, and identity without publishing
         working-directory: social_campaign_agent
         env:
           FB_PAGE_ACCESS_TOKEN: ${{ secrets.FB_PAGE_ACCESS_TOKEN }}
+          FB_APP_ACCESS_TOKEN: ${{ secrets.FB_APP_ACCESS_TOKEN }}
           FB_GRAPH_API_VERSION: ${{ vars.FB_GRAPH_API_VERSION || 'v26.0' }}
           MEDIA_KIND: ${{ inputs.media_kind }}
           PAGE_ID: ${{ inputs.page_id }}
