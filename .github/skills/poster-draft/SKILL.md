@@ -1,10 +1,12 @@
 ---
 name: poster-draft
-description: Create the reviewed childhood-cancer poster preset and return it for human review only.
+description: Create or revise source-verified childhood-cancer posters and rendered Reels from a prompt, with an optional protected deployment after exact approval.
 ---
 
 # Poster Draft
 
-Use the reviewed childhood-cancer preset. Preserve its NCI/ACS citations, population scope, accessible alt text, and educational disclaimer. Return the exact rendered asset and mark it `DRAFT / NEEDS REVIEW`. Do not publish, schedule, send, or announce it. Publication requires separate approval of the exact copy, asset, destination, audience, and timing.
+Use the user's prompt as the campaign specification; support initial creation and revisions to existing campaign drafts. Create both a poster and a rendered vertical MP4 Reel when requested, each with original visual composition, exact captions, source notes, accessible alt text, and the health disclaimer. Keep assets under `social_campaign_agent/assets/`, use new versioned filenames, and preserve prior files. Mark outputs `DRAFT / NEEDS REVIEW` until approved.
 
-Evaluation: draft status present, alt text present, and publication permission false.
+Deployment is available only via an active protected publisher workflow. Before any publish action, show the exact media, copy, destination, audience, and timing; obtain explicit approval for that item; run the no-network preview; and use the separate publish run only through required platform/environment gates. Never publish automatically or claim success without confirmation from the official platform response.
+
+Evaluation: source claims preserved, output assets actually exist and match the requested formats, disclaimer and alt text are present, revisions honor feedback, and publishing has exact-item approval plus protected workflow evidence.

@@ -12,30 +12,28 @@ on:
           - reel
         default: photo
       page_id:
-        description: Exact numeric Facebook Page ID from the approved Page URL
+        description: Exact numeric Facebook Page ID
         required: true
         type: string
-        default: "61595341701921"
       page_name:
-        description: Exact Page name expected from the Page access token
+        description: Exact Facebook Page name for token identity verification
         required: true
         type: string
-        default: CHILD & HOPE
       asset_path:
-        description: Approved image/video path inside assets/
+        description: Approved image or MP4 path under assets/
         required: true
         type: string
       caption_file_path:
-        description: Exact approved caption file inside assets/
+        description: Exact approved caption file under assets/
         required: true
         type: string
       reel_title:
         description: Reel title (ignored for photo posts)
         required: false
         type: string
-        default: "Optogenetics: light and selected neural circuits"
+        default: Childhood cancer awareness
       approval:
-        description: NO previews without network; PUBLISH only after approval of this exact post
+        description: Preview first; PUBLISH only after approval of this exact post
         required: true
         type: choice
         options:
@@ -60,8 +58,8 @@ jobs:
         with:
           python-version: "3.12"
       - name: Preview exact Page post without network access
+        working-directory: social_campaign_agent
         env:
-          FB_PUBLISH_APPROVAL: "NO"
           MEDIA_KIND: ${{ inputs.media_kind }}
           PAGE_ID: ${{ inputs.page_id }}
           PAGE_NAME: ${{ inputs.page_name }}
@@ -71,7 +69,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m scripts.publish_facebook_page \
-            --approval "$FB_PUBLISH_APPROVAL" \
+            --approval NO \
             --media-kind "$MEDIA_KIND" \
             --page-id "$PAGE_ID" \
             --page-name "$PAGE_NAME" \
@@ -91,11 +89,11 @@ jobs:
         with:
           python-version: "3.12"
       - name: Publish approved Facebook Page post once
+        working-directory: social_campaign_agent
         env:
           FB_PAGE_ACCESS_TOKEN: ${{ secrets.FB_PAGE_ACCESS_TOKEN }}
           FB_GRAPH_API_VERSION: ${{ vars.FB_GRAPH_API_VERSION || 'v26.0' }}
           FB_PRODUCTION_REVIEW_GATE: ${{ vars.FB_PRODUCTION_REVIEW_GATE }}
-          FB_PUBLISH_APPROVAL: PUBLISH
           MEDIA_KIND: ${{ inputs.media_kind }}
           PAGE_ID: ${{ inputs.page_id }}
           PAGE_NAME: ${{ inputs.page_name }}
@@ -105,11 +103,11 @@ jobs:
         run: |
           set -euo pipefail
           if [[ "$FB_PRODUCTION_REVIEW_GATE" != "enabled" ]]; then
-            echo "Facebook publishing is disabled: verify required reviewers on facebook-production, then set FB_PRODUCTION_REVIEW_GATE=enabled." >&2
+            echo "Facebook publishing is disabled: configure required reviewers on facebook-production, then set FB_PRODUCTION_REVIEW_GATE=enabled." >&2
             exit 1
           fi
           python -m scripts.publish_facebook_page \
-            --approval "$FB_PUBLISH_APPROVAL" \
+            --approval PUBLISH \
             --media-kind "$MEDIA_KIND" \
             --page-id "$PAGE_ID" \
             --page-name "$PAGE_NAME" \
