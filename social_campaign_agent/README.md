@@ -13,10 +13,11 @@ Use the repository-root `.github/workflows/publish-facebook-page.yml` for approv
 Required GitHub configuration:
 
 - Secret `FB_PAGE_ACCESS_TOKEN`: Page access token for a person who can create Page content. Never put token values in source control, workflow inputs, URLs, or chat.
+- Secret `FB_APP_ACCESS_TOKEN`: Meta app access token used by the protected preflight to inspect Page-token validity and granted scopes through the token-debug endpoint. Never put token values in source control, workflow inputs, URLs, or chat.
 - Variable `FB_GRAPH_API_VERSION`: a currently supported Graph API version (the workflow defaults to `v26.0`).
 - Environment `facebook-production`: configure required reviewers.
 - Variable `FB_PRODUCTION_REVIEW_GATE`: set to `enabled` only after verifying the environment's required reviewers are configured. The publish job fails closed otherwise.
-- The token/app must have `pages_show_list`, `pages_read_engagement`, and `pages_manage_posts`; the token must resolve to the exact approved Page ID and Page name before upload.
+- The protected `VERIFY` mode checks token validity and the `pages_show_list`, `pages_read_engagement`, and `pages_manage_posts` scopes using the app access token, then resolves the Page token to the exact approved Page ID and name. It does not upload media or create a post. `PUBLISH` repeats all checks before upload.
 
 Photo posts use Meta's official `/{page-id}/photos` endpoint. Reels use the Page Reels Publishing API: initialize, upload to the returned `rupload.facebook.com` URL, poll processing status with a bounded wait, and finish only when ready. Page Reels are Public and limited by Meta to 30 API-published Reels per rolling 24 hours. The workflow is manual-dispatch only; a daily draft cadence does not enable unattended publication. Do not retry an ambiguous final publish request before reconciling the returned Page post or video ID.
 
