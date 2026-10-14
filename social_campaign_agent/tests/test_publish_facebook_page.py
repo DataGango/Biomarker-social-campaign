@@ -121,7 +121,32 @@ class FacebookPagePublishTests(unittest.TestCase):
         self.assertNotIn("secret-token-test", str(raised.exception))
         self.assertNotIn("secret-app-token-test", str(raised.exception))
         self.assertNotIn("private provider response", str(raised.exception))
+        self.assertIn("FB_APP_ACCESS_TOKEN", str(raised.exception))
+        self.assertNotIn("FB_PAGE_ACCESS_TOKEN", str(raised.exception))
         self.assertEqual(len(self.calls), 1)
+
+    def test_invalid_page_token_stops_before_identity_or_upload(self):
+        self.responses = [{"data": {"is_valid": False}}]
+        with self.assertRaisesRegex(PublicationError, "FB_PAGE_ACCESS_TOKEN is invalid or expired"):
+            self.publish("reel", approval="VERIFY")
+        self.assertEqual(len(self.calls), 1)
+
+    def test_page_identity_oauth_failure_identifies_page_secret_without_upload(self):
+        def rejected_page_token(method, url, headers, body, timeout):
+            self.calls.append((method, url, headers, body, timeout))
+            if len(self.calls) == 1:
+                return 200, json.dumps(self.valid_token_debug()).encode()
+            return 401, json.dumps({
+                "error": {"type": "OAuthException", "code": 190, "message": "private provider response"}
+            }).encode()
+
+        with self.assertRaisesRegex(PublicationError, "Meta rejected FB_PAGE_ACCESS_TOKEN") as raised:
+            self.publish("photo", transport=rejected_page_token)
+        self.assertNotIn("FB_APP_ACCESS_TOKEN", str(raised.exception))
+        self.assertNotIn("secret-token-test", str(raised.exception))
+        self.assertNotIn("secret-app-token-test", str(raised.exception))
+        self.assertNotIn("private provider response", str(raised.exception))
+        self.assertEqual([call[0] for call in self.calls], ["GET", "GET"])
 
     def test_wrong_page_id_stops_before_upload(self):
         self.responses = [{"id": "1345909531941708", "name": "CHILD & HOPE"}]
