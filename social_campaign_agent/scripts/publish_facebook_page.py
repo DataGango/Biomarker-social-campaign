@@ -88,7 +88,9 @@ def _http_transport(
         raise PublicationError("Facebook request failed; transport details were omitted.") from exc
 
 
-def _decode_json(status: int, body: bytes) -> dict[str, object]:
+def _decode_json(
+    status: int, body: bytes, *, token_secret: str = "FB_PAGE_ACCESS_TOKEN"
+) -> dict[str, object]:
     try:
         payload = json.loads(body)
     except (json.JSONDecodeError, UnicodeDecodeError) as exc:
@@ -111,7 +113,7 @@ def _decode_json(status: int, body: bytes) -> dict[str, object]:
             details.append(f"subcode {subcode}")
         hint = ""
         if str(code) == "190":
-            hint = " Meta rejected the access token; use a current Page token issued for the approved Page."
+            hint = f" Meta rejected {token_secret}; replace that secret in the protected facebook-production environment with a current token."
         elif str(code) in {"10", "200"}:
             hint = " The token may lack the required Page publishing permissions."
         raise PublicationError(f"Facebook Graph API rejected the request ({'; '.join(details)}).{hint} Raw response omitted.")
@@ -131,6 +133,8 @@ def _api_json(
     token: str,
     data: dict[str, str] | bytes | None = None,
     content_type: str | None = None,
+    *,
+    token_secret: str = "FB_PAGE_ACCESS_TOKEN",
 ) -> dict[str, object]:
     headers = {"Authorization": f"Bearer {token}"}
     body = data
@@ -141,7 +145,7 @@ def _api_json(
         headers["Content-Type"] = content_type or "application/octet-stream"
     try:
         status, response_body = transport(method, url, headers, body, REQUEST_TIMEOUT_SECONDS)
-        return _decode_json(status, response_body)
+        return _decode_json(status, response_body, token_secret=token_secret)
     except PublicationError:
         raise
     except Exception as exc:
@@ -184,12 +188,18 @@ def _verify_page_token_permissions(
     expected_page_id: str,
 ) -> None:
     debug_url = f"{api_root}/debug_token?{urllib.parse.urlencode({'input_token': page_token})}"
-    payload = _api_json(transport, "GET", debug_url, app_access_token)
+    payload = _api_json(
+        transport, "GET", debug_url, app_access_token,
+        token_secret="FB_APP_ACCESS_TOKEN",
+    )
     data = payload.get("data")
     if not isinstance(data, dict):
         raise PublicationError("Facebook token debugger returned no token data.")
     if data.get("is_valid") is not True:
-        raise PublicationError("Facebook token debugger reports the Page token is invalid or expired.")
+        raise PublicationError(
+            "Facebook token debugger reports FB_PAGE_ACCESS_TOKEN is invalid or expired; "
+            "replace that secret in the protected facebook-production environment with a current token for the approved Page."
+        )
 
     scopes = data.get("scopes")
     if not isinstance(scopes, list) or not all(isinstance(scope, str) for scope in scopes):
